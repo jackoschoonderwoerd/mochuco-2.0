@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="header">audio</div>
+    <input type="file"
+        #audioInput
+        (change)="audioSelected($event)"
+        style="display: none;">
+
+    <!-- <audio *ngIf="lsc?.audioUrl || lsc?.audioUrl !== null"
+        [src]="lsc?.audioUrl"
+        controls></audio> -->
+
+    <button class="select-audio"
+        (click)="audioInput.click()"
+        mat-raised-button>{{lsc?.audioUrl ? 'edit audio': 'select audio'}}</button>
+    <button class="delete-audio-url"
+        mat-raised-button
+        (click)="onDeleteAudioUrl()">delete audio url</button>
+</div>

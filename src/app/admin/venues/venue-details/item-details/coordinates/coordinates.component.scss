@@ -1,0 +1,16 @@
+@import "./src/styles";
+
+form {
+    border: 1px solid $my-black;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    max-width: 20rem;
+    margin: auto;
+    padding: 1rem;
+    .venue-name,
+    .item-name {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+}

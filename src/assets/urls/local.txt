@@ -1,0 +1,3 @@
+http://localhost:4200/object?objectId=object_001&venueId=venue_001
+http://localhost:4200/object?objectId=object_002&venueId=venue_001
+http://localhost:4200/object?objectId=object_003&venueId=venue_001

@@ -1,0 +1,29 @@
+@import "./src/styles";
+
+.admin-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    .header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        .location {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid $my-black;
+            // max-width: 30rem;
+            .venue,
+            .item {
+                display: grid;
+                grid-template-columns: 7rem 1fr;
+            }
+        }
+    }
+    .filter-table {
+        // max-width: 40rem;
+        // margin: auto;
+    }
+}

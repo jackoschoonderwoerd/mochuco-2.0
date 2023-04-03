@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./styles/colors";
+
+.admin-container {
+    padding: 3rem;
+}
+ul {
+    padding: 0;
+    margin: 0;
+}
+li {
+    list-style: none;
+}
+
+html,
+body {
+    height: 100%;
+    background-color: wheat;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+button {
+    text-transform: uppercase;
+}
+a {
+    text-decoration: none;
+    color: $my-black;
+}
+.header {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.my-form-field .mat-form-field-wrapper {
+}
+.red-snackbar {
+    background-color: #f44336;
+    color: white !important;
+    border: none;
+}

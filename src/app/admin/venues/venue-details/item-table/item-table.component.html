@@ -1,0 +1,103 @@
+<main>
+    <mat-form-field *ngIf="items?.length != 0">
+        <mat-label>Filter</mat-label>
+        <input matInput
+            (keyup)="applyFilter($event)"
+            placeholder="enter filter string"
+            #input>
+    </mat-form-field>
+
+    <table mat-table
+        *ngIf="items?.length != 0"
+        [dataSource]="itemDataSource">
+
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell
+                class="name-th"
+                *matHeaderCellDef>Item Name</th>
+            <td mat-cell
+                class="name-td"
+                *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="qr code local">
+            <th mat-header-cell
+                class="qr-code-th"
+                *matHeaderCellDef>QR L</th>
+            <td mat-cell
+                class="qr-code-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onQrCodeLocal(element.id)">QRL</button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="stats">
+            <th mat-header-cell
+                class="stats-th"
+                *matHeaderCellDef>Stats</th>
+            <td mat-cell
+                class="stats-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onItemStats(element.id)">
+                    <mat-icon>bar_chart</mat-icon>
+                </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="qr code">
+            <th mat-header-cell
+                class="qr-code-th"
+                *matHeaderCellDef>QR Code</th>
+            <td mat-cell
+                class="qr-code-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onQrCode(element.id)">QR</button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell
+                class="delete-th"
+                *matHeaderCellDef>Delete</th>
+            <td mat-cell
+                class="delete-td"
+                *matCellDef="let element">
+                <button mat-mini-fab
+                    (click)="onDeleteItem(element.id)"
+                    color="warn">
+                    <mat-icon>delete</mat-icon>
+                </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="details">
+            <th mat-header-cell
+                class="details-th"
+                *matHeaderCellDef>Details</th>
+            <td mat-cell
+                class="details-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onDetails(element.id)">
+                    <mat-icon>search</mat-icon>
+                </button></td>
+        </ng-container>
+
+
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedItemColumns"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedItemColumns;"></tr>
+
+        <tr class="mat-row"
+            *matNoDataRow>
+            <td class="mat-cell"
+                colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+    <div class="no-items"
+        *ngIf="!items || items.length == 0">
+        no items yet
+    </div>
+</main>

@@ -1,0 +1,14 @@
+// rules_version = '2';
+
+
+rules_version = '2';
+service cloud.firestore {
+
+
+    match /{document=**} {
+      allow read: if true;
+    //   allow read : if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.
+      allow write: if true;
+    }
+
+}

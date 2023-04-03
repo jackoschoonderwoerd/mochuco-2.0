@@ -1,0 +1,19 @@
+<div class="admin-container">
+    <form [formGroup]="form">
+        <mat-form-field>
+            <mat-label>email</mat-label>
+            <input type="text"
+                matInput
+                formControlName="email">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>password</mat-label>
+            <input type="text"
+                matInput
+                formControlName="password">
+        </mat-form-field>
+        <button mat-raised-button
+            [disabled]="form.invalid"
+            (click)="onSubmit()">submit</button>
+    </form>
+</div>

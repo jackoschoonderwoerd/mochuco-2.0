@@ -1,0 +1,16 @@
+<div class="admin-container">
+    <form [formGroup]="venueNameForm">
+        <mat-form-field>
+            <mat-label>Venue name</mat-label>
+            <input type="text"
+                matInput
+                formControlName="name"
+                placeholder="venue name">
+        </mat-form-field>
+        <button [disabled]="venueNameForm.invalid"
+            mat-raised-button
+            (click)="onUpdateName()">{{editmode ? 'update name':'create venue name'}}</button>
+        <button mat-raised-button
+            (click)="onCancel()">cancel</button>
+    </form>
+</div>

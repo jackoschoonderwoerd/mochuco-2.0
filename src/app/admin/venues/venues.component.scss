@@ -1,0 +1,16 @@
+@import "./../../../styles";
+.admin-container {
+    main {
+        border: 1px solid $my-black;
+        padding: 1rem;
+        max-width: 50rem;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+
+        .add-button {
+            // border: 3px solid red;
+        }
+    }
+}

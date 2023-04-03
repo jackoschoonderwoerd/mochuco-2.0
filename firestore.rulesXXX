@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+
+    match /databases/{database}/documents {
+
+        function userOwnesVenue(userId, venueId) {
+            return exists(/databases/$(database)/documents/users/$(userId)/venuesOwned/$(venueId));
+        }
+
+
+
+        function userCanCreateVenue(userId) {
+            return true;
+        }
+
+        match /venues/{venueId} {
+            allow read: if true;
+
+            allow create: if userCanCreateVenue(request.auth.uid) || request.auth.uid == '8Yb9nGiE8Wf7B7jRjlfrFt0NNq93';
+            allow update: if userOwnesVenue(request.auth.uid, venueId) || request.auth.uid == '8Yb9nGiE8Wf7B7jRjlfrFt0NNq93';
+            allow delete: if userOwnesVenue(request.auth.uid, venueId) || request.auth.uid == '8Yb9nGiE8Wf7B7jRjlfrFt0NNq93';
+
+
+            match /items/{itemId} {
+                allow read: if true;
+
+                allow write: if userOwnesVenue(request.auth.uid, venueId) || request.auth.uid == '8Yb9nGiE8Wf7B7jRjlfrFt0NNq93';
+            }
+            match /locations/{locationId} {
+                allow read: if true;
+                allow write: if true;
+            }
+            match /visitsLog/{visitsLogId} {
+                allow read: if true;
+                allow write: if true;
+                match /visits/{visitId} {
+                    allow read: if true;
+                    allow write: if true;
+                }
+            }
+        }
+        match /users/{userId} {
+            allow read: if true;
+            allow write: if true;
+            match /venuesOwned/{venuesOwnedId} {
+                allow read: if true
+                allow write: if true;
+            }
+        }
+    }
+}
+

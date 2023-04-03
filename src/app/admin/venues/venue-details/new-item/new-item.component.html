@@ -1,0 +1,17 @@
+<div class="admin-container">
+    <div class="header">adding item to venue: <span>{{venue?.venueName}}</span></div>
+    <form [formGroup]="newItemForm">
+        <mat-form-field>
+            <mat-label>item name</mat-label>
+            <input type="text"
+                matInput
+                formControlName="name">
+        </mat-form-field>
+        <button class="add-new-item"
+            mat-raised-button
+            [disabled]="newItemForm.invalid"
+            (click)="onAddNewItem()">{{editmode?'update item name':'add new item'}}</button>
+        <button mat-raised-button
+            (click)="onCancel()">cancel</button>
+    </form>
+</div>

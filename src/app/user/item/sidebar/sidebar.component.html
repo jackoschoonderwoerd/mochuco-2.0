@@ -1,0 +1,5 @@
+<ul #selectLanguageList>
+    <li *ngFor="let language of itemService.availableLanguages$|async"
+        (click)="onLanguageSelected(language)">
+        <button mat-raised-button>{{language}}</button></li>
+</ul>

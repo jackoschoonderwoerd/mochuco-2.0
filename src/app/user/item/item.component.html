@@ -1,0 +1,33 @@
+<div class="item-container">
+    <app-sidebar (closeSidebar)="languageSelected($event)"
+        [class.display-none]="hideSidebar"
+        #sideBar></app-sidebar>
+    <app-item-header></app-item-header>
+
+    <main class="item">
+        <!-- {{(itemService.lsc$|async)?.audioUrl}}
+        {{(itemService.lsc$|async)?.description}} -->
+        <div class="img-like">
+            <img [src]="(itemService.item$|async)?.imageUrl"
+                alt="">
+            <button mat-mini-fab
+                [disabled]="liked"
+                class="like"
+                color="primary"
+                (click)="onLiked()">
+                <mat-icon>thumb_up_alt</mat-icon>
+            </button>
+        </div>
+        <div class="audio-container"
+            *ngIf="(itemService.lsc$|async)?.audioUrl">
+            <audio [src]="(itemService.lsc$|async)?.audioUrl"
+                controls></audio>
+        </div>
+
+        <div class="description"
+            [innerHTML]="(itemService.lsc$|async)?.description">
+        </div>
+
+    </main>
+    <app-item-footer (showSidebar)="hideSidebar = false"></app-item-footer>
+</div>

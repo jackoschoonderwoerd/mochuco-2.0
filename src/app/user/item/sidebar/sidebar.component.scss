@@ -1,0 +1,11 @@
+ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    li {
+        button {
+            width: 100%;
+            text-transform: uppercase;
+        }
+    }
+}

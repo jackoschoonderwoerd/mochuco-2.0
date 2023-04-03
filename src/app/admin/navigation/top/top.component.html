@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+    <ul class="menu">
+        <li class="user-id"
+            *ngIf="afAuth.currentUser">
+            {{afAuth.currentUser.uid}}
+        </li>
+        <li class="user-email"
+            *ngIf="afAuth.currentUser">
+            {{afAuth.currentUser.email}}
+        </li>
+        <li routerLinkActive="link-active"
+            class="menu-item">
+            <button mat-raised-button
+                routerLink="venues">Venues</button>
+        </li>
+        <li class="menu-item"
+            routerLink="admin-home"
+            routerLinkActive="link-active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <button mat-raised-button
+                routerLink="">home</button>
+        </li>
+        <li class="menu-item"
+            *ngIf="!(authService.isLoggedIn$|async)"
+            routerLinkActive="link-active">
+            <button mat-raised-button
+                routerLink="log-in">Log in</button>
+        </li>
+        <li class="menu-item"
+            *ngIf="authService.isLoggedIn$|async"
+            routerLinkActive="link-active">
+            <button mat-raised-button
+                (click)="onLogOut()">Log out</button>
+        </li>
+
+    </ul>
+</mat-toolbar>

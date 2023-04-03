@@ -1,0 +1,78 @@
+<div class="admin-container">
+    <main>
+
+        <div class="sizes">
+            <div class="qr-code-size">
+                <div class="label">adjust image size</div>
+                <form [formGroup]="qrSizeForm">
+                    <input name="size"
+                        matInput
+                        type="number"
+                        formControlName="size"
+                        (change)="onQrSizeChange()"
+                        (keyup)="onQrSizeChange()">
+                </form>
+            </div>
+            <div class="venue-name-font-size">
+                <div class="label">adjust venue name font size</div>
+                <form [formGroup]="venueNameFontSizeForm">
+                    <input name="size"
+                        matInput
+                        type="number"
+                        formControlName="size"
+                        (change)="onVenueNameSizeChange()"
+                        (keyup)="onVenueNameSizeChange()">
+                </form>
+            </div>
+            <div *ngIf="!onlyVenueMode"
+                class="item-name-font-size">
+                <div class="label">adjust item name font size</div>
+                <form [formGroup]="itemNameFontSizeForm">
+                    <input name="size"
+                        matInput
+                        type="number"
+                        formControlName="size"
+                        (change)="onItemNameSizeChange()"
+                        (keyup)="onItemNameSizeChange()">
+                </form>
+            </div>
+            <div class="only-venue"
+                *ngIf="onlyVenueMode">
+                There is no itemId. Therefore this qr-code can only be used in combination with items with latitude and longitude information.
+            </div>
+            <button mat-raised-button
+                color="primary"
+                (click)="onCreateDownloadLinkWithTitle()">create download link</button>
+            <button mat-raised-button
+                color="primary"
+                (click)="onExitToApp()">
+                {{onlyVenueMode?'back to venues':'back to venue details'}}
+                <!-- <mat-icon>exit_to_app</mat-icon> -->
+            </button>
+        </div>
+        <div class="print-area"
+            #printArea>
+            <div class="qr-local"
+                *ngIf="qrLocal">localhost:4200</div>
+            <div class="print-canvas"
+                [style.padding-bottom]="getPadingBottom()">
+                <qrcode #parent
+                    [imageSrc]="logoPath"
+                    [qrdata]="qrData"
+                    [width]="width"
+                    [imageHeight]="imageHeight"
+                    [imageWidth]="imageWidth"
+                    [errorCorrectionLevel]="'M'"></qrcode>
+
+                <div class="venue-name"></div>
+                <div class="item-name"
+                    [style.font-size]="onItemNameSizeChange()"
+                    *ngIf="item">I: {{item.name}}</div>
+                <div class="venue-name"
+                    [style.font-size]="onVenueNameSizeChange()"
+                    *ngIf="venue">V: <span>{{venue.venueName}}</span></div>
+            </div>
+        </div>
+
+    </main>
+</div>

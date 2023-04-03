@@ -1,0 +1,33 @@
+<div class="admin-container">
+
+    <main>
+        <div class="header">main item status</div>
+        <div class="main-page-description">
+            <p>The item, designated as 'main item' contains the information that is accesible by selecting the logo of the venue in the menu bar at the top of the users device.</p>
+            <p>It contains general information about the venue and is not to be used for any specific item.</p>
+            <p>There can only be one single item with the status 'main item'.</p>
+        </div>
+        <div class="header">
+
+            <div class="name">
+                <div class="title">name:</div>
+                <div class="">{{item?.name}}</div>
+            </div>
+            <div class="status">
+                <div class="title">status</div>
+                <div class=""> {{item?.isMainItem}}</div>
+            </div>
+
+        </div>
+        <mat-radio-group (change)="onRadioChange($event)"
+            aria-label="Select an option">
+            <mat-radio-button [checked]="item?.isMainItem"
+                [value]=true>true</mat-radio-button>
+            <mat-radio-button [checked]="!item?.isMainItem"
+                [value]=false>false</mat-radio-button>
+        </mat-radio-group>
+        <button mat-raised-button
+            color="primary"
+            (click)="onBackToItem()">back to item</button>
+    </main>
+</div>

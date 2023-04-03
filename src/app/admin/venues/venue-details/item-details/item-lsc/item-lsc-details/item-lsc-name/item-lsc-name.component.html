@@ -1,0 +1,17 @@
+<div class="admin-container">
+    <!-- <div class="editmode">EDITMODE: {{editmode}}</div> -->
+    <form [formGroup]="nameForm">
+        <mat-form-field>
+            <mat-label>item name</mat-label>
+            <input type="text"
+                matInput
+                formControlName="name">
+        </mat-form-field>
+        <button mat-raised-button
+            (click)="onAddItemName()"
+            [disabled]="nameForm.invalid">{{editmode?'save edits':'add name'}}</button>
+        <button class="cancel"
+            mat-raised-button
+            (click)="onCancel()">cancel</button>
+    </form>
+</div>

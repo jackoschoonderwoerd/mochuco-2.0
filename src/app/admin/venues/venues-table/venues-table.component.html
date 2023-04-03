@@ -1,0 +1,105 @@
+<div class="app-table-container"
+    *ngIf="venues?.length > 0">
+
+    <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput
+            (keyup)="applyFilter($event)"
+            placeholder="enter filter string"
+            #input>
+    </mat-form-field>
+
+    <table mat-table
+        [dataSource]="venuesDataSource">
+
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell
+                class="name-th"
+                *matHeaderCellDef>Venue Name</th>
+            <td mat-cell
+                class="name-td"
+                *matCellDef="let element"> {{element.venueName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="qr-code-local">
+            <th mat-header-cell
+                class="qr-code-th"
+                *matHeaderCellDef>QR Local</th>
+            <td mat-cell
+                class="qr-code-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onQrCodeLocal(element.id)">
+                    QRL
+                </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="qr-code">
+            <th mat-header-cell
+                class="qr-code-th"
+                *matHeaderCellDef>QR Code</th>
+            <td mat-cell
+                class="qr-code-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onQrCode(element.id)">
+                    QR
+                </button></td>
+        </ng-container>
+
+
+        <!-- <ng-container matColumnDef="stats">
+            <th mat-header-cell
+                class="stats-th"
+                *matHeaderCellDef>Stats</th>
+            <td mat-cell
+                class="stats-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onStats(element.id)">
+                    <mat-icon>bar_chart</mat-icon>
+                </button></td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell
+                class="delete-th"
+                *matHeaderCellDef>Delete</th>
+            <td mat-cell
+                class="delete-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="warn"
+                    (click)="onDelete(element.id)">
+                    <mat-icon>delete</mat-icon>
+                </button></td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell
+                class="edit-th"
+                *matHeaderCellDef>Details</th>
+            <td mat-cell
+                class="edit-td"
+                *matCellDef="let element"><button mat-mini-fab
+                    color="primary"
+                    (click)="onEdit(element.id)">
+                    <mat-icon>search</mat-icon>
+                </button></td>
+        </ng-container>
+
+
+
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedVenueColumns"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedVenueColumns;"></tr>
+
+        <tr class="mat-row"
+            *matNoDataRow>
+            <td class="mat-cell"
+                colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+</div>

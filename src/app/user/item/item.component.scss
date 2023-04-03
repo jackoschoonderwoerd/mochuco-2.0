@@ -1,0 +1,60 @@
+@import "./../../../styles";
+
+.item-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+    height: 100vh;
+    max-width: 35rem;
+    margin: auto;
+    app-sidebar {
+        background-color: $my-blue;
+        height: 100vh;
+        position: absolute;
+        color: $my-white;
+        padding: 1rem;
+        top: 0;
+        left: 0;
+        max-width: 50%;
+        z-index: 3;
+        overflow: scroll;
+    }
+    app-item-header {
+        background-color: $my-red;
+        color: $my-white;
+    }
+
+    main {
+        background-color: $my-white;
+        overflow: scroll;
+        .img-like {
+            position: relative;
+            img {
+                width: 100%;
+            }
+            .like {
+                border: 1px solid white;
+                position: absolute;
+                bottom: 1rem;
+                right: 1rem;
+            }
+        }
+        .description {
+            padding: 0.5rem 1rem;
+        }
+        .audio-container {
+            display: flex;
+
+            gap: 1rem;
+
+            justify-content: center;
+            margin-top: 1rem;
+        }
+    }
+    app-item-footer {
+        background-color: $my-black;
+    }
+}
+.display-none {
+    display: none;
+}

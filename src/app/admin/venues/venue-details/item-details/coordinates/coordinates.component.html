@@ -1,0 +1,36 @@
+<div class="admin-container">
+
+    <form [formGroup]="coordinatesForm">
+        <div class="header">coordinates for:</div>
+        <div class="venue-name">
+            <div class="title header">venue:</div>
+            <div class="header">{{venueName}}</div>
+        </div>
+        <div class="item-name">
+            <div class="title header">item:</div>
+            <div class="header">{{item?.name}}</div>
+        </div>
+        <mat-form-field>
+            <mat-label>latitude</mat-label>
+            <input type="text"
+                matInput
+                formControlName="latitude">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>longitude</mat-label>
+            <input type="text"
+                matInput
+                formControlName="longitude">
+        </mat-form-field>
+        <button mat-raised-button
+            [disabled]="coordinatesForm.invalid"
+            color="primary"
+            (click)="onAddCoordinates()">{{editmode? 'update coordinates':'add coordinates'}}</button>
+        <button mat-raised-button
+            color="warn"
+            (click)="onDeleteCoordinates()">delete coordinates</button>
+        <button mat-raised-button
+            color="primary"
+            (click)="onBackToItem()">back to item</button>
+    </form>
+</div>

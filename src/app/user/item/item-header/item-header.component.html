@@ -1,0 +1,21 @@
+<div class="toolbar">
+    <img class="mochuco-logo"
+        src="./../../../../assets/Logo//2023-0101 Mochuco - Logo transparant (1).png"
+        alt="">
+    <div class="item-name">
+        {{(itemService.item$|async)?.name}}
+    </div>
+    <img *ngIf="!mainItemActive"
+        (click)="onVenueLogo()"
+        [src]="(itemService.venue$|async)?.logoUrl"
+        alt=""
+        class="venue-logo">
+
+
+    <mat-icon *ngIf="mainItemActive"
+        (click)="onVenueLogo()"
+        class="exit"
+        [inline]="true">exit_to_app</mat-icon>
+
+
+</div>

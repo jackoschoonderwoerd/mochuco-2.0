@@ -1,0 +1,52 @@
+<div class="admin-container">
+    <div class="fields">
+        <div *ngIf="lsc"
+            class="preview"
+            [innerHTML]="lsc.description">
+
+        </div>
+        <div class="input">
+            <form [formGroup]="descriptionForm">
+                <mat-form-field>
+                    <mat-label>description</mat-label>
+                    <textarea #textarea
+                        type="text"
+                        placeholder="enter your description here"
+                        [ngStyle]="{'height': textAreaHeight}"
+                        (keyup)="textareaKeyUp($event)"
+                        (change)="textAreaChanged()"
+                        (mouseup)="textAreaChanged()"
+                        class="input"
+                        formControlName="description"
+                        matInput
+                        (keyup)="onKeyup($event)"
+                        formControlName="description">
+                    </textarea>
+                </mat-form-field>
+                <div class="buttons">
+                    <button mat-raised-button
+                        matTooltip="A header can contain a maximum of 25 characters. It will start on a new line and the font will be bigger than the reguar text. The text following the header will start on a new line. A header with the name of the item will be automatically generated. Do NOT alter the <h5></h5> tags. Any text between tags, other than the <hs> tags will automatically be removed."
+                        (click)="addHeader()">add header
+                    </button>
+                    <button mat-raised-button
+                        matTooltip="Any text with surrounded by <p></p> tags will start on a new line. At the top and bottom of the paragraph there will be a white line."
+                        (click)="addParagraph()">add paragraph
+                    </button>
+                    <button mat-raised-button
+                        matTooltip="Any text followed by <br> will start on a new line. Instead of using this button you can also use the return key on your keyboard."
+                        (click)="addLineBreak()">add linebreak
+                    </button>
+                </div>
+                <button class="add-description"
+                    color="primary"
+                    mat-raised-button
+                    [disabled]="descriptionForm.invalid"
+                    (click)="onAddDescription()">{{editmode ? 'save edits': 'add description'}}</button>
+            </form>
+        </div>
+    </div>
+    <button class="cancel"
+        color="primary"
+        mat-raised-button
+        (click)="onCancel()">cancel</button>
+</div>

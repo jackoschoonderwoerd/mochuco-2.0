@@ -1,0 +1,9 @@
+<div>
+    <zxing-scanner #scanner
+        (scanSuccess)="scanSuccessHandler($event)">
+    </zxing-scanner>
+    <button (click)="enableScanner()"
+        type="button"
+        class="btn btn-success">Enable scanner</button>
+</div>
+<div class="url">{{url}}</div>

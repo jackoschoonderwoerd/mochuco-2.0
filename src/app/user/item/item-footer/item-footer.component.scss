@@ -1,0 +1,12 @@
+.footer-container {
+    padding: 0.5rem;
+    // outline: 3px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .scanner {
+        width: 2rem;
+        border: 2px solid white;
+        // background-color: white;
+    }
+}

@@ -1,0 +1,13 @@
+LOCAL
+
+http://localhost:4200/object?objectId=object_001&venueId=venue_001
+http://localhost:4200/object?objectId=object_002&venueId=venue_001
+http://localhost:4200/object?objectId=object_003&venueId=venue_001
+
+REMOTE
+
+https://mochuco-a185b.web.app/object?objectId=object_001&venueId=venue_001
+https://mochuco-a185b.web.app/object?objectId=object_002&venueId=venue_001
+https://mochuco-a185b.web.app/object?objectId=object_003&venueId=venue_001
+
+https://mochuco-20.web.app

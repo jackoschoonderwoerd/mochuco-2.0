@@ -1,0 +1,26 @@
+<div class="lsc-container">
+    <div class="language-name-description">
+        <div class="language">{{lsc.language}}</div>
+        <div class="name">{{lsc.name}}</div>
+        <div *ngIf="lsc.description"
+            class="description">{{lsc.description}}</div>
+    </div>
+
+    <div class="audio-buttons">
+        <audio class="audio"
+            [src]="lsc.audioUrl"
+            controls></audio>
+        <button class="delete"
+            mat-mini-fab
+            color="warn"
+            (click)="onDeleteLsc()">
+            <mat-icon fontIcon="delete"></mat-icon>
+        </button>
+        <button class="lsc-details"
+            color="primary"
+            mat-mini-fab
+            (click)="onLscDetails()">
+            <mat-icon fontIcon="edit"></mat-icon>
+        </button>
+    </div>
+</div>
