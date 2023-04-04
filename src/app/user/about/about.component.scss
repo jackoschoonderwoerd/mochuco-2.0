@@ -1,0 +1,11 @@
+.about-container {
+    height: 100vh;
+    background-color: white;
+    padding: 1rem;
+}
+.button-container {
+    // border: 1px solid black;
+    display: flex;
+    // grid-template-columns: 1fr;
+    justify-content: end;
+}

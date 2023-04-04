@@ -15,22 +15,35 @@ export class ItemComponent implements OnInit {
     itemId: string;
     activeLanguage: string;
     liked: boolean = false;
+    hideAbout: boolean = true;
 
     constructor(
         private route: ActivatedRoute,
         public itemService: ItemService
     ) { }
     ngOnInit(): void {
+        console.log('item.component.ts')
         this.route.queryParams.subscribe((params: any) => {
             this.venueId = params.venueId;
             this.itemId = params.itemId;
-            this.itemService.setVenueObservable(this.venueId);
-            this.itemService.setItemObservable(this.venueId, this.itemId);
-            this.itemService.activeLanguage$.subscribe((activeLanguage: string) => {
-                this.activeLanguage = activeLanguage
-                this.itemService.setLscObservable(this.venueId, this.itemId, activeLanguage);
-                this.itemService.setAvailableLanguagesObservable(this.venueId, this.itemId, activeLanguage);
-            })
+            console.log(this.venueId, this.itemId)
+            if (this.venueId && this.itemId) {
+                console.log('venueId and itemId present', this.venueId, this.itemId);
+                this.itemService.setVenueObservable(this.venueId);
+                this.itemService.setItemObservable(this.venueId, this.itemId);
+                this.itemService.activeLanguage$.subscribe((activeLanguage: string) => {
+                    console.log('called from ngOnInit item.component.ts')
+                    this.activeLanguage = activeLanguage
+                    this.itemService.setLscObservable(this.venueId, this.itemId, activeLanguage);
+                    this.itemService.setAvailableLanguagesObservable(this.venueId, this.itemId, activeLanguage);
+                })
+            } else if (this.venueId && !this.itemId) {
+                console.log('find nearest')
+                this.itemService.findNearestItem(this.venueId)
+
+            } else {
+                console.log('insufficient data')
+            }
 
         })
     }
@@ -45,7 +58,11 @@ export class ItemComponent implements OnInit {
                 this.liked = true;
             })
             .catch(err => console.log(err));
-        // console.log(this.venueId, this.itemId)
-        // this.itemService.updateTimesVisited(this.venueId, this.itemId, this.activeLanguage)
+    }
+    showAbout() {
+        this.hideAbout = false;
+    }
+    onHideAbout() {
+        this.hideAbout = true;
     }
 }

@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ItemService } from '../item.service';
 
 @Component({
     selector: 'app-item-footer',
@@ -10,7 +11,15 @@ export class ItemFooterComponent {
 
     @Output() showSidebar = new EventEmitter<void>
 
-    constructor(private router: Router) { }
+
+
+    constructor(
+        private router: Router,
+        public itemService: ItemService
+    ) { }
+
+
+
 
     onScanner() {
 

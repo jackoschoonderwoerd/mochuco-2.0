@@ -1,3 +1,5 @@
+// https://medium.com/beingcoders/best-way-to-add-country-flags-icon-in-angular-6b593a25d0f3
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './admin/auth/auth.service';
@@ -29,7 +31,7 @@ export class AppComponent implements OnInit {
         this.afAuth.onAuthStateChanged((user) => {
             if (user) {
                 this.authService.setUserAfterRefresh(user);
-                console.log(user)
+                // console.log(user)
                 if (user.uid == 'P91mUtOGYsMxBdjT2dqAAMzaBeG2') {
                     this.authService.setIsAdmin()
                 }

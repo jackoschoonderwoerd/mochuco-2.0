@@ -2,12 +2,20 @@
     <app-sidebar (closeSidebar)="languageSelected($event)"
         [class.display-none]="hideSidebar"
         #sideBar></app-sidebar>
-    <app-item-header></app-item-header>
 
+    <app-about #about
+        [class.display-none]="hideAbout"
+        (hideAbout)="(onHideAbout())"></app-about>
+    <app-item-header (showAbout)="(showAbout())"></app-item-header>
     <main class="item">
-        <!-- {{(itemService.lsc$|async)?.audioUrl}}
-        {{(itemService.lsc$|async)?.description}} -->
-        <div class="img-like">
+        <div *ngIf="itemService.collectingItemData$|async"
+            class="item-spinner-container">
+            <mat-spinner class="item-spinner"></mat-spinner>
+            <div class="loading-item">loading item image</div>
+        </div>
+
+        <div *ngIf="!(itemService.collectingItemData$|async)"
+            class="img-like">
             <img [src]="(itemService.item$|async)?.imageUrl"
                 alt="">
             <button mat-mini-fab
@@ -18,14 +26,23 @@
                 <mat-icon>thumb_up_alt</mat-icon>
             </button>
         </div>
-        <div class="audio-container"
-            *ngIf="(itemService.lsc$|async)?.audioUrl">
-            <audio [src]="(itemService.lsc$|async)?.audioUrl"
-                controls></audio>
+        <div *ngIf="(itemService.collectingLscData$|async)"
+            class="lsc-spinner-container">
+            <mat-spinner color="warn"
+                class="lsc-spinner"></mat-spinner>
+            <div class="loading-lsc">Loading LSC...</div>
         </div>
+        <div *ngIf="!(itemService.collectingLscData$|async)"
+            class="lsc">
+            <div class="audio-container"
+                *ngIf="(itemService.lsc$|async)?.audioUrl">
+                <audio [src]="(itemService.lsc$|async)?.audioUrl"
+                    controls></audio>
+            </div>
 
-        <div class="description"
-            [innerHTML]="(itemService.lsc$|async)?.description">
+            <div class="description"
+                [innerHTML]="(itemService.lsc$|async)?.description">
+            </div>
         </div>
 
     </main>

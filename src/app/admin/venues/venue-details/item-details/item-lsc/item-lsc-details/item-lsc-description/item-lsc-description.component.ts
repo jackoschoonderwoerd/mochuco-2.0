@@ -22,6 +22,7 @@ export class ItemLscDescriptionComponent implements OnInit, AfterViewInit {
     description: string;
     submitDisabled: boolean = false;
     textAreaHeight;
+    prefacemode: boolean = false
 
     constructor(
         private router: Router,
@@ -35,10 +36,13 @@ export class ItemLscDescriptionComponent implements OnInit, AfterViewInit {
         this.initDescriptionForm();
         // TODO UPDATE TEXTAREAHEIGHT
         this.route.params.subscribe((params: any) => {
-
+            console.log(params.action);
             this.venueId = params.venueId;
             if (!params.itemId) {
                 this.editmode = false
+            } else if (params.action == 'preface') {
+                this.prefacemode = true;
+                console.log('adding preface')
             } else {
                 this.itemId = params.itemId;
                 this.language = params.language
@@ -219,8 +223,6 @@ export class ItemLscDescriptionComponent implements OnInit, AfterViewInit {
     }
 
     onAddDescription() {
-        console.log(this.descriptionForm.value);
-
         this.itemDetailDbService.updateItemDescriptionByLanguage(
             this.venueId,
             this.itemId,

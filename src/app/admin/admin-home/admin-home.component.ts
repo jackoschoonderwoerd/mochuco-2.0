@@ -14,6 +14,6 @@ export class AdminHomeComponent {
         public authService: AuthService) { }
 
     onAddPreface() {
-        this.router.navigate(['/admin/add-preface'])
+        this.router.navigate(['/admin/item-lsc-description', { action: 'preface' }])
     }
 }

@@ -1,9 +1,16 @@
-<div>
+<div class="scanner-container">
     <zxing-scanner #scanner
         (scanSuccess)="scanSuccessHandler($event)">
     </zxing-scanner>
-    <button (click)="enableScanner()"
+    <!-- <button (click)="enableScanner()"
         type="button"
-        class="btn btn-success">Enable scanner</button>
+        class="btn btn-success">Enable scanner</button> -->
 </div>
 <div class="url">{{url}}</div>
+<div class="button-container">
+    <button mat-mini-fab
+        color="primary"
+        (click)="exit()">
+        <mat-icon>exit_to_app</mat-icon>
+    </button>
+</div>

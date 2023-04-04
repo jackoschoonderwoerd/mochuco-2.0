@@ -20,7 +20,11 @@ export class ItemHeaderComponent {
         private route: ActivatedRoute
     ) { }
 
+    @Output() showAbout: EventEmitter<void> = new EventEmitter()
 
+    onMochucoLogo() {
+        this.showAbout.emit();
+    }
 
     onVenueLogo() {
         this.itemId = this.route.snapshot.queryParams['itemId']

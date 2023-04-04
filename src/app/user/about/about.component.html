@@ -1,0 +1,77 @@
+<div class="about-container">
+
+
+    <!-- <div class="version">V16</div> -->
+    <div *ngIf="(itemService?.activeLanguage$|async) === 'dutch'"
+        class="content_nl">
+        <div class="header">
+            <h4>Over Mochuco</h4>
+        </div>
+        <p>
+
+            Mochuco is de nieuwe mogelijkheid om makkelijk en snel meer te weten te komen over ons cultureel erfgoed. Veel van onze geschiedenis geeft waardevolle, leuke en interessante informatie.
+        </p>
+        <p>
+
+            U herkent de Mochuco QR-codes aan het uiltje in het midden. Scan de code en u krijgt direct de informatie te zien.
+        </p>
+        <p>
+
+            Wilt u meer informatie over Mochuco, neemt u dan contact met ons op via <a href="mailto:info@mochuco.nl">info@mochuco.nl</a>.
+        </p>
+        <p>
+
+            Wij wensen u veel plezier!
+        </p>
+        <p>
+
+            Mochuco
+        </p>
+    </div>
+
+    <div *ngIf="(itemService?.activeLanguage$|async) === 'english'"
+        class="content_en">
+        <h4>About Mochuco</h4>
+        <p>
+            Mochuco is a new opportunity to easily and quickly learn more about our cultural heritage. Much of our history provides valuable, fun and interesting information. You can recognize the Mochuco QR codes by the little owl in the middle. Just scan the code and you will immediately see the information.
+        </p>
+        <p>
+            If you want more information about Mochuco, please contact us at <a href="mailto:info@mochuco.nl">info@mochuco.nl</a>.
+        </p>
+        <p>
+            We wish you lots of fun!
+        </p>
+        <p>
+            Mochuco
+        </p>
+    </div>
+    <div *ngIf="(itemService?.activeLanguage$|async) === 'french'"
+        class="content_fr">
+        <h4>
+            À propos de Mochuco
+        </h4>
+        <p>
+            Mochuco est une nouvelle façon de s'informer sur notre patrimoine culturel, facilement et rapidement. Une grande partie de notre histoire fournit des informations précieuses, amusantes et intéressantes. Vous pouvez reconnaître les codes QR Mochuco grâce à la chouette au milieu. Scannez le code et vous verrez immédiatement les informations.
+        </p>
+        <p>
+            Si vous voulez plus d'informations sur Mochuco, veuillez nous contacter à <a href="mailto:info@mochuco.nl">info@mochuco.nl</a>.
+        </p>
+        <p>
+            Nous vous souhaitons beaucoup de plaisir !
+        </p>
+        <p>
+            Mochuco
+        </p>
+
+    </div>
+
+    <div class="button-container">
+        <button mat-mini-fab
+            color="primary"
+            (click)="onHideAbout()">
+            <mat-icon>exit_to_app</mat-icon>
+        </button>
+    </div>
+    <!-- <mat-icon>
+        exit_to_app</mat-icon> -->
+</div>
