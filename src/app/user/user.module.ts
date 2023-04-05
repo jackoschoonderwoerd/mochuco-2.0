@@ -14,6 +14,7 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './item/sidebar/sidebar.component';
 import { UserMaterialModule } from './user-material.module';
+import { AboutComponent } from './about/about.component';
 
 
 
@@ -26,6 +27,7 @@ import { UserMaterialModule } from './user-material.module';
         ItemFooterComponent,
         ItemHeaderComponent,
         SidebarComponent,
+        AboutComponent,
 
     ],
     imports: [

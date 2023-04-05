@@ -1,10 +1,7 @@
 <div class="footer-container">
-    <button mat-raised-button
-        (click)="onSelectLanguage()">select language</button>
-    <!-- <button class="scanner"
-        mat-raised-button
-        >
-    </button> -->
+    <div (click)="onSelectLanguage()"
+        class="flag {{getFlag(itemService.activeLanguage$|async)}}"
+        style="color:white"></div>
     <img class="scanner"
         (click)="onScanner()"
         src="./../../../../assets/icons/qr-code-icon-5.png"

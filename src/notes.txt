@@ -1,0 +1,2 @@
+QR https://www.npmjs.com/package/angularx-qrcode
+FLAGS: https://medium.com/beingcoders/best-way-to-add-country-flags-icon-in-angular-6b593a25d0f3

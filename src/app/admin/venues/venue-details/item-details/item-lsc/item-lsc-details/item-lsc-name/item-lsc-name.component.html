@@ -1,4 +1,18 @@
 <div class="admin-container">
+    <div class="location header">
+        <div class="venue">
+            <div class="title">venue:</div>
+            <div class="">{{venue.venueName}}</div>
+        </div>
+        <div class="item">
+            <div class="title">item:</div>
+            <div class="">{{item.name}}</div>
+        </div>
+        <div class="language">
+            <div class="title">language</div>
+            <div class="">{{language}}</div>
+        </div>
+    </div>
     <!-- <div class="editmode">EDITMODE: {{editmode}}</div> -->
     <form [formGroup]="nameForm">
         <mat-form-field>

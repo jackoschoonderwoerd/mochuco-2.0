@@ -182,7 +182,7 @@ export class ItemDetailsComponent implements OnInit {
                 if (mainItems.length != 0 && !this.item.isMainItem) {
                     this.dialog.open(WarningComponent, {
                         data: {
-                            message: 'The venue already has an item designated as \'main page\'. Alter the status of this item before assigning a new item as your main page.'
+                            message: 'The venue already has an item designated as \'main item\'. This main item has a green background behind it\'s name. Alter the status of this item before assigning a new item as your main page.'
                         }
                     })
                 } else {

@@ -20,11 +20,16 @@ export class ItemHeaderComponent {
         private route: ActivatedRoute
     ) { }
 
+    @Output() showAbout: EventEmitter<void> = new EventEmitter()
 
+    onMochucoLogo() {
+        this.showAbout.emit();
+    }
 
     onVenueLogo() {
-        this.itemId = this.route.snapshot.queryParams['itemId']
         this.venueId = this.route.snapshot.queryParams['venueId'];
+        this.itemId = this.route.snapshot.queryParams['itemId'];
+        console.log(this.venueId, this.itemId)
         this.itemService.activeLanguage$.subscribe((activeLanguage: string) => {
             if (!this.mainItemActive) {
                 this.itemService.getMainItem(this.venueId).subscribe((mainItems: Item[]) => {
@@ -34,9 +39,15 @@ export class ItemHeaderComponent {
                 })
                 this.mainItemActive = true;
             } else {
-                this.itemService.setItemObservable(this.venueId, this.itemId)
-                this.itemService.setLscObservable(this.venueId, this.itemId, activeLanguage)
-                this.mainItemActive = false;
+                if (this.itemId) {
+                    this.itemService.setItemObservable(this.venueId, this.itemId)
+                    this.itemService.setLscObservable(this.venueId, this.itemId, activeLanguage)
+                    this.mainItemActive = false;
+                } else {
+                    console.log('no itemId');
+                    this.itemService.findNearestItem(this.venueId)
+                    this.mainItemActive = false
+                }
             }
         })
     }

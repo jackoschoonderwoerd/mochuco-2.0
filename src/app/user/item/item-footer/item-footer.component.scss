@@ -4,6 +4,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .flag {
+        font-size: 2rem;
+    }
     .scanner {
         width: 2rem;
         border: 2px solid white;

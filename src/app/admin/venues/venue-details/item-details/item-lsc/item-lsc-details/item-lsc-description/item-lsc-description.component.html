@@ -1,10 +1,20 @@
 <div class="admin-container">
     <div class="fields">
-        <div *ngIf="lsc"
-            class="preview"
-            [innerHTML]="lsc.description">
-
+        <div class="location header">
+            <div class="subject">description</div>
+            <div class="venue">
+                <div class="title">venue:</div>
+                <div class="">{{venue?.venueName}}</div>
+            </div>
+            <div class="item">
+                <div class="title">item:</div>
+                <div class="">{{item?.name}}</div>
+            </div>
+            <div class="language">
+                <div class="title">language:</div>{{language}}
+            </div>
         </div>
+
         <div class="input">
             <form [formGroup]="descriptionForm">
                 <mat-form-field>
@@ -43,6 +53,11 @@
                     [disabled]="descriptionForm.invalid"
                     (click)="onAddDescription()">{{editmode ? 'save edits': 'add description'}}</button>
             </form>
+        </div>
+        <div *ngIf="lsc"
+            class="preview"
+            [innerHTML]="lsc.description">
+
         </div>
     </div>
     <button class="cancel"

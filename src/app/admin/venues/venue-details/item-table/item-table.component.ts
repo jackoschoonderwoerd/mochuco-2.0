@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ItemDetailsDbService } from '../item-details/item-details-db.service';
 import { Item, LSContent } from '../../../../shared/item.model';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemDetailsStService } from '../item-details/item-details-st.service';
 import { Auth } from '@angular/fire/auth';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
     selector: 'app-item-table',
@@ -17,7 +18,8 @@ import { Auth } from '@angular/fire/auth';
 export class ItemTableComponent implements OnInit {
 
     displayedItemColumns: string[] = ['name', 'delete', 'stats', 'qr code local', 'qr code', 'details'];
-    itemDataSource: MatTableDataSource<any>
+    itemDataSource: MatTableDataSource<any>;
+    @ViewChild('empTbSort') empTbSort = new MatSort();
 
     @Input() private venueId: string;
     items: Item[]
@@ -39,6 +41,7 @@ export class ItemTableComponent implements OnInit {
                 this.itemDataSource = new MatTableDataSource(items)
             })
     }
+
 
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;

@@ -63,7 +63,7 @@ export class ItemDetailsDbService {
     readItems(venueId): Observable<Item[]> {
         const itemsRef = collection(this.firestore, `venues/${venueId}/items`);
         const orderedItemsRef = query(itemsRef, orderBy('name'))
-        return collectionData(itemsRef, { idField: 'id' }) as Observable<Item[]>
+        return collectionData(orderedItemsRef, { idField: 'id' }) as Observable<Item[]>
     }
     readItem(venueId: string, itemId: string) {
         const itemRef = doc(this.firestore, `venues/${venueId}/items/${itemId}`);

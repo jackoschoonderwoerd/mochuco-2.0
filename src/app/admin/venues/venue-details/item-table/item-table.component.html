@@ -9,7 +9,9 @@
 
     <table mat-table
         *ngIf="items?.length != 0"
-        [dataSource]="itemDataSource">
+        [dataSource]="itemDataSource"
+        matSort
+        #empTbSort="matSort">
 
 
         <ng-container matColumnDef="name">
@@ -18,7 +20,8 @@
                 *matHeaderCellDef>Item Name</th>
             <td mat-cell
                 class="name-td"
-                *matCellDef="let element"> {{element.name}} </td>
+                *matCellDef="let element"
+                [ngClass]="{'is-main-item': element.isMainItem}"> {{element.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="qr code local">

@@ -7,16 +7,19 @@ import { ItemComponent } from './item/item.component';
 import { ItemFooterComponent } from './item/item-footer/item-footer.component';
 import { ItemHeaderComponent } from './item/item-header/item-header.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
 @NgModule({
 
     imports: [
-        MatIconModule
+        MatIconModule,
+        MatProgressSpinnerModule,
     ],
     exports: [
-        MatIconModule
+        MatIconModule,
+        MatProgressSpinnerModule,
     ]
 })
 export class UserMaterialModule { }

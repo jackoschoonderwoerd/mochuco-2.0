@@ -19,14 +19,29 @@
         z-index: 3;
         overflow: scroll;
     }
+    app-about {
+        position: absolute;
+        z-index: 10;
+        max-width: 35rem;
+    }
     app-item-header {
-        background-color: $my-red;
+        background-color: $header-background;
         color: $my-white;
     }
 
     main {
         background-color: $my-white;
         overflow: scroll;
+        .item-spinner-container {
+            display: grid;
+            gap: 1rem;
+            // grid-template-columns: 1fr;
+
+            justify-content: center;
+            padding: 2rem;
+            .item-spinner {
+            }
+        }
         .img-like {
             position: relative;
             img {
@@ -37,6 +52,14 @@
                 position: absolute;
                 bottom: 1rem;
                 right: 1rem;
+            }
+        }
+        .lsc-spinner-container {
+            display: grid;
+            gap: 1rem;
+            justify-content: center;
+            padding: 2rem;
+            .lsc-spinner {
             }
         }
         .description {
@@ -52,7 +75,7 @@
         }
     }
     app-item-footer {
-        background-color: $my-black;
+        background-color: $footer-background;
     }
 }
 .display-none {

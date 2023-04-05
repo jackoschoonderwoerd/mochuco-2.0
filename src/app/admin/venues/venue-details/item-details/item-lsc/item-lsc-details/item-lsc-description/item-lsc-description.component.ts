@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ItemDetailsDbService } from '../../../item-details-db.service';
-import { LSContent } from '../../../../../../../shared/item.model';
+import { Item, LSContent } from '../../../../../../../shared/item.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Venue, VenuesService } from 'src/app/admin/venues/venues.service';
 
 @Component({
     selector: 'app-item-description',
@@ -22,25 +23,38 @@ export class ItemLscDescriptionComponent implements OnInit, AfterViewInit {
     description: string;
     submitDisabled: boolean = false;
     textAreaHeight;
+    prefacemode: boolean = false;
+    venue: Venue;
+    item: Item;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private fb: FormBuilder,
         private itemDetailDbService: ItemDetailsDbService,
-        private snackbar: MatSnackBar
+        private snackbar: MatSnackBar,
+        private venuesService: VenuesService
     ) { }
 
     ngOnInit(): void {
         this.initDescriptionForm();
         // TODO UPDATE TEXTAREAHEIGHT
         this.route.params.subscribe((params: any) => {
-
+            console.log(params.action);
             this.venueId = params.venueId;
+            this.venuesService.readVenue(this.venueId).subscribe((venue: Venue) => {
+                this.venue = venue;
+            })
             if (!params.itemId) {
                 this.editmode = false
+            } else if (params.action == 'preface') {
+                this.prefacemode = true;
+                console.log('adding preface')
             } else {
                 this.itemId = params.itemId;
+                this.itemDetailDbService.readItem(this.venueId, this.itemId).subscribe((item: Item) => {
+                    this.item = item;
+                })
                 this.language = params.language
                 this.editmode = true
                 this.itemDetailDbService.getLSCbyLanguage(this.venueId, this.itemId, this.language)
@@ -219,8 +233,6 @@ export class ItemLscDescriptionComponent implements OnInit, AfterViewInit {
     }
 
     onAddDescription() {
-        console.log(this.descriptionForm.value);
-
         this.itemDetailDbService.updateItemDescriptionByLanguage(
             this.venueId,
             this.itemId,

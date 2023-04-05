@@ -26,6 +26,8 @@ export class QrCodeComponent implements OnInit {
     imageHeight: number = 75;
     imageWidth: number = 75;
     logoPath = './assets/2021-0705_Mochuco_-_Logo_zwart_wit_1000px.png'
+    venueId: string;
+    itemId: string;
     venue: Venue;
     item: Item;
     onlyVenueMode: boolean = false;
@@ -52,47 +54,44 @@ export class QrCodeComponent implements OnInit {
 
         this.route.params.subscribe((params: any) => {
             console.log(params)
-            const venueId = params.venueId
+            this.venueId = params.venueId
+            if (params.venueId) {
+                this.venueId = params.venueId
+                this.venuesService.readVenue(this.venueId).subscribe((venue: Venue) => {
+                    this.venue = venue;
+                    console.log(this.venue);
+                })
+            }
+            if (params.itemId) {
+                console.log(params.itemId);
+                const itemId = params.itemId
+                this.itemDetailsDbService.readItem(this.venueId, itemId).subscribe((item: Item) => {
+                    this.item = item;
+                    console.log(this.item)
+                })
+            }
+            this.itemId = params.itemId
+            console.log(this.itemId);
             if (params.local) {
                 this.qrLocal = true
             }
-            if (!venueId) {
-                this.dialog.open(ErrPageComponent, {
-                    data: {
-                        message: 'Insufficient data, no Venue Id'
-                    }
-                })
-            } else {
-                this.venuesService.readVenue(venueId)
-                    .subscribe((venue: Venue) => {
-                        this.venue = venue
-                        console.log(venue)
-                    })
-            }
-            const itemId = params.itemId
-            if (!itemId) {
-                if (!this.qrLocal) {
-                    this.onlyVenueMode = true
-                    this.qrData = 'https://mochuco-20.web.app/user?venueId=' +
-                        venueId
+            if (this.venueId && !this.itemId) {
+                this.onlyVenueMode = true;
+                if (this.qrLocal) {
+                    this.qrData = `localhost:4200/user?venueId=${this.venueId}`
                 } else {
-                    this.qrData = `localhost:4200/user?venueId=${venueId}`
+                    this.qrData = `https://mochuco-20.web.app/user?venueId=${this.venueId}`
                 }
-            } else {
-                this.itemDetailsDbService.readItem(venueId, itemId)
-                    .subscribe((item: Item) => {
-                        this.item = item
-                    })
-                if (!this.qrLocal) {
-                    this.qrData = 'https://mochuco-20.web.app/user?venueId=' +
-                        venueId +
-                        '&itemId=' +
-                        itemId
-                } else {
-                    this.qrData = `localhost:4200/user?venueId=${venueId}&itemId=${itemId}`
-                }
-            }
 
+            } else if (this.itemId && this.venueId) {
+                if (this.qrLocal) {
+                    this.qrData = `localhost:4200/user?venueId=${this.venueId}&itemId=${this.itemId}`
+                } else {
+                    this.qrData = `https://mochuco-20.web.app/user?venueId=${this.venueId}&itemId=${this.itemId}`
+                }
+            } else {
+                console.log('insufficient data')
+            }
         })
     }
     initQrSizeForm() {
@@ -132,15 +131,27 @@ export class QrCodeComponent implements OnInit {
     }
 
     onCreateDownloadLinkWithTitle() {
-        console.log(this.printArea);
-        html2canvas(this.printArea.nativeElement).then(canvas => {
-            console.log(canvas)
-            var image: any = canvas.toDataURL();
-            var aDownloadLink = document.createElement('a');
-            aDownloadLink.download = this.item.name;
-            aDownloadLink.href = image;
-            aDownloadLink.click();
-        })
+        if (!this.onlyVenueMode) {
+            console.log(this.printArea);
+            html2canvas(this.printArea.nativeElement).then(canvas => {
+                console.log(canvas)
+                var image: any = canvas.toDataURL();
+                var aDownloadLink = document.createElement('a');
+                aDownloadLink.download = this.item.name;
+                aDownloadLink.href = image;
+                aDownloadLink.click();
+            })
+        } else {
+            console.log(this.printArea);
+            html2canvas(this.printArea.nativeElement).then(canvas => {
+                console.log(canvas)
+                var image: any = canvas.toDataURL();
+                var aDownloadLink = document.createElement('a');
+                aDownloadLink.download = this.venue.venueName;
+                aDownloadLink.href = image;
+                aDownloadLink.click();
+            })
+        }
     }
     getPadingBottom() {
         return this.width / 12 + 'px';

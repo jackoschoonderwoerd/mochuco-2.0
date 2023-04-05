@@ -3,9 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ItemDetailsDbService } from '../../../item-details-db.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LSContent } from '../../../../../../../shared/item.model';
+import { Item, LSContent } from '../../../../../../../shared/item.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrPageComponent } from 'src/app/admin/shared/err-page/err-page.component';
+import { Venue } from 'src/app/admin/venues/venues.service';
+import { VenuesService } from '../../../../../venues.service';
 
 @Component({
     selector: 'app-lsc-item-name',
@@ -19,10 +21,14 @@ export class ItemLscNameComponent implements OnInit {
     language: string;
     nameForm: FormGroup
     editmode: boolean = false;
-    lsc: LSContent
+    lsc: LSContent;
+    item: Item;
+    venue: Venue
+
     constructor(
         private route: ActivatedRoute,
         private itemDetailsDbService: ItemDetailsDbService,
+        private venuesService: VenuesService,
         private fb: FormBuilder,
         private router: Router,
         private snackbar: MatSnackBar,
@@ -32,8 +38,10 @@ export class ItemLscNameComponent implements OnInit {
     ngOnInit(): void {
         this.initNameForm()
         this.route.params.subscribe((params: any) => {
-            console.log(params)
             this.venueId = params.venueId;
+            this.venuesService.readVenue(this.venueId).subscribe((venue: Venue) => {
+                this.venue = venue;
+            })
             if (!params.itemId) {
                 this.dialog.open(ErrPageComponent, {
                     data: {
@@ -42,10 +50,12 @@ export class ItemLscNameComponent implements OnInit {
                 })
             } else {
                 this.itemId = params.itemId;
+                this.itemDetailsDbService.readItem(this.venueId, this.itemId).subscribe((item: Item) => {
+                    this.item = item;
+                })
                 this.language = params.language;
                 this.itemDetailsDbService.getLSCbyLanguage(this.venueId, this.itemId, this.language)
                     .subscribe((lsc: LSContent) => {
-                        console.log(lsc)
                         if (lsc) {
                             this.editmode = true
                             this.nameForm.patchValue({

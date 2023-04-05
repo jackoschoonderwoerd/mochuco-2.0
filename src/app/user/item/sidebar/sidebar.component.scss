@@ -4,8 +4,14 @@ ul {
     gap: 1rem;
     li {
         button {
-            width: 100%;
-            text-transform: uppercase;
+            .language {
+                display: inline;
+                text-transform: capitalize;
+            }
+            .flag::before {
+                display: inline;
+                font-size: 36px;
+            }
         }
     }
 }

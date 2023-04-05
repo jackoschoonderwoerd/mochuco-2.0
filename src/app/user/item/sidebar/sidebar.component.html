@@ -1,5 +1,11 @@
 <ul #selectLanguageList>
     <li *ngFor="let language of itemService.availableLanguages$|async"
         (click)="onLanguageSelected(language)">
-        <button mat-raised-button>{{language}}</button></li>
+        <!-- <div class="{{getFlagIcon(language)}}"></div> -->
+        <button mat-raised-button>
+            <div class="language">{{language}}</div>
+            <!-- <div class="flag {{getFlagIcon(language)}}"></div> -->
+        </button>
+    </li>
 </ul>
+<!-- <div class="{{getFlagIcon('german')}}"></div> -->
