@@ -1,11 +1,22 @@
 .about-container {
+    letter-spacing: 1.1px;
     height: 100vh;
-    background-color: white;
+    background-color: #607845;
     padding: 1rem;
+    color: #f8c057;
+    a {
+        color: #f8c057;
+    }
 }
-.button-container {
+.close-container {
     // border: 1px solid black;
     display: flex;
     // grid-template-columns: 1fr;
     justify-content: end;
+    height: 3rem;
+    mat-icon {
+        padding: 0 2rem 2rem 2rem;
+        // right: 2rem;
+        font-size: 3rem;
+    }
 }

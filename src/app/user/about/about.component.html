@@ -64,14 +64,35 @@
         </p>
 
     </div>
+    <div class="content-german"
+        *ngIf="(itemService?.activeLanguage$|async) === 'german'">
+        <div class="header">
+            <h4>Über Mochuco</h4>
+        </div>
+        <p>
 
-    <div class="button-container">
-        <button mat-mini-fab
-            color="primary"
-            (click)="onHideAbout()">
-            <mat-icon>exit_to_app</mat-icon>
-        </button>
+            Mochuco ist die neue Möglichkeit, schnell und einfach mehr über unser kulturelles Erbe zu erfahren. Ein Großteil unserer Geschichte bietet wertvolle, unterhaltsame und interessante Informationen.
+        </p>
+        <p>
+
+            Die Mochuco-QR-Codes erkennen Sie an der Eule in der Mitte. Scannen Sie den Code und Sie sehen sofort die Informationen.
+        </p>
+        <p>
+
+            Wenn Sie weitere Informationen über Mochuco wünschen, kontaktieren Sie uns bitte unter <a href="mailto:info@mochuco.nl">info@mochuco.nl</a>.
+        </p>
+        <p>
+
+            Wir wünschen Ihnen viel Spaß!
+        </p>
+        <p>
+
+            Mochuco
+        </p>
     </div>
-    <!-- <mat-icon>
-        exit_to_app</mat-icon> -->
+    <div class="close-container"
+        (click)="onHideAbout()">
+        <mat-icon>exit_to_app</mat-icon>
+
+    </div>
 </div>

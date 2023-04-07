@@ -2,7 +2,7 @@
 
 .toolbar {
     display: flex;
-    padding: 0.3rem 0.5rem;
+    padding: 0.5rem;
     justify-content: space-between;
     align-items: center;
     color: $header-font;
@@ -10,6 +10,11 @@
     .mochuco-logo {
         width: 2.5rem;
         cursor: pointer;
+    }
+    .getting-lsc {
+        mat-spinner {
+            height: 3rem;
+        }
     }
     .venue-logo {
         width: 2.5rem;

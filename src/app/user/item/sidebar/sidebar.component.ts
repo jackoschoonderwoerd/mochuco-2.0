@@ -14,7 +14,7 @@ export class SidebarComponent {
 
     availableLanguages$: Observable<string[]>;
 
-    @Output() closeSidebar = new EventEmitter<string>
+    @Output() closeSidebar = new EventEmitter<void>
 
     constructor(
         public itemService: ItemService,
@@ -23,13 +23,17 @@ export class SidebarComponent {
     ) { }
 
 
-    onLanguageSelected(language) {
+    languageSelected(language) {
         console.log(language);
         this.itemService.setActiveLanguage(language);
-        this.closeSidebar.emit(language);
+        this.onClose()
     }
 
     getFlagIcon(language) {
         return this.flagService.convertLanguageToCountryCode(language)
+    }
+    onClose() {
+        console.log('onClose(){}')
+        this.closeSidebar.emit(null);
     }
 }

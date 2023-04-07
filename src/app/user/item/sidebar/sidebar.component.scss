@@ -1,17 +1,34 @@
+@import "./src/styles";
+
 ul {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
     li {
-        button {
+        // display: flex;
+        .language-btn {
+            width: 100%;
+            background-color: $header-background;
+            color: $header-font;
             .language {
+                font-size: 1.2rem;
                 display: inline;
                 text-transform: capitalize;
             }
-            .flag::before {
-                display: inline;
-                font-size: 36px;
-            }
         }
+    }
+}
+.close-container {
+    margin-top: 2rem;
+    display: flex;
+
+    justify-content: end;
+    padding-right: 10px;
+    .close {
+        transform: scale(2);
+        color: $header-background;
+
+        // font-size: 75px;
+        // height: 3rem;
     }
 }

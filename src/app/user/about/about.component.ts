@@ -22,6 +22,7 @@ export class AboutComponent implements OnInit {
     }
 
     onHideAbout() {
+        console.log('onHideAbout(){}')
         this.hideAbout.emit();
     }
 }

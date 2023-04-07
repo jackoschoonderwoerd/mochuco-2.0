@@ -85,7 +85,7 @@ export class ItemService {
     ) { }
 
     setVenueObservable(venueId: string) {
-        console.log('setVenueObservable(){}')
+        // console.log('setVenueObservable(){}')
         const venueRef = doc(this.firestore, `venues/${venueId}`);
         return docData(venueRef, { idField: 'id' })
             .subscribe((venue: Venue) => {
@@ -95,7 +95,7 @@ export class ItemService {
 
     setItemObservable(venueId: string, itemId: string) {
         this.collectingItemDataSubject.next(true)
-        console.log('setItemObservable(){}', venueId, itemId);
+        // console.log('setItemObservable(){}', venueId, itemId);
         if (itemId != null) {
 
             this.addVisit(venueId, itemId);
@@ -111,22 +111,47 @@ export class ItemService {
 
     setLscObservable(venueId: string, itemId: string, language: string) {
         this.collectingLscDataSubject.next(true);
-        console.log('setLscObservable(){}', venueId, itemId, language)
-        // this.updateTimesVisited(venueId, itemId, language)
-        // this.addVisit(venueId, itemId, language);
+        //    CHECK IF LANGUAGE IS AVAILABLE ELSE GO DUTCH
+
         const lscRef = doc(this.firestore, `venues/${venueId}/items/${itemId}/languages/${language}`)
         docData(lscRef)
             .subscribe((lsc: LSContent) => {
-                if (lsc != undefined) {
-                    console.log(lsc.name);
+                if (lsc) {
+                    // console.log(lsc)
                     this.collectingLscDataSubject.next(false);
                     this.lscSubject.next(lsc);
+                } else {
+                    console.log('no lsc')
+                    this.findNearestItem(venueId);
+                    // language = 'dutch'
+                    // const lscRef = doc(this.firestore, `venues/${venueId}/items/${itemId}/languages/${language}`)
+                    // docData(lscRef).subscribe((lsc: LSContent) => {
+                    //     this.lscSubject.next(lsc)
+                    //     this.collectingLscDataSubject.next(false)
+                    // })
                 }
             })
     }
 
+    languageAvailable(venueId, itemId, language) {
+        console.log('languagesAvailabel(){}', venueId, itemId, language)
+        const lscsRef = collection(this.firestore, `venues/${venueId}/items/${itemId}/languages`)
+        collectionData(lscsRef).subscribe((lscs: LSContent[]) => {
+            const availableLanguages: string[] = [];
+            lscs.forEach((lsc: LSContent) => {
+                availableLanguages.push(lsc.language)
+            })
+            if (availableLanguages.indexOf(language) == -1) {
+                console.log('language unavailable')
+                return false
+            } else {
+                return true
+            }
+        })
+    }
+
     setAvailableLanguagesObservable(venueId: string, itemId: string, activeLanguage: string) {
-        console.log('setAvailableLanguagesObservable(){}', venueId, itemId, activeLanguage);
+        // console.log('setAvailableLanguagesObservable(){}', venueId, itemId, activeLanguage);
         const languagesRef = collection(this.firestore, `venues/${venueId}/items/${itemId}/languages`)
         collectionData(languagesRef).subscribe((lscs: LSContent[]) => {
             const availableLanguages: string[] = [];
@@ -142,11 +167,11 @@ export class ItemService {
         })
     }
     setActiveLanguage(language: string) {
-        console.log(language);
         this.activeLanguageSubject.next(language);
     }
     getMainItem(venueId): Observable<any> {
-        console.log('get main item')
+        this.collectingItemDataSubject.next(true);
+        this.collectingLscDataSubject.next(true);
         const itemsRef = collection(this.firestore, `venues/${venueId}/items`);
         const mainItemQuery = query(itemsRef, where('isMainItem', '==', true))
         return collectionData(mainItemQuery, { idField: 'id' })
@@ -158,25 +183,26 @@ export class ItemService {
             liked: false,
 
         }
-        // console.log(itemVisit)
         const visitRef = collection(this.firestore, `venues/${venueId}/visitsLog/${itemId}/visits`)
         return addDoc(visitRef, itemVisit)
             .then((docRef: any) => {
                 this.activeVisitId = docRef.id
             })
             .catch(err => {
-                console.log(err);
+                // console.log(err);
             })
     }
 
     like(venueId: string, itemId: string) {
         const visitRef = doc(this.firestore, `venues/${venueId}/visitsLog/${itemId}/visits/${this.activeVisitId}`);
         return updateDoc(visitRef, { liked: true })
-            .then((res: any) => console.log('item liked'))
+            .then((res: any) => { })
             .catch(err => console.error(err));
     }
 
     findNearestItem(venueId) {
+        this.collectingItemDataSubject.next(true);
+        this.collectingLscDataSubject.next(true);
         return this.itemDetailsDbService.readItems(venueId).subscribe((items: Item[]) => {
             const idLatLons: IdLatLon[] = [];
             items.forEach((item: Item) => {
@@ -188,11 +214,11 @@ export class ItemService {
                 idLatLons.push(idLatLon);
             })
             this.porcessIdLatLons(idLatLons, venueId)
+
         })
     }
     porcessIdLatLons(idLatLons: IdLatLon[], venueId) {
         if (navigator) {
-            console.log('navigator found')
             navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
                 if (position) {
                     const userLat = position.coords.latitude;
@@ -213,19 +239,20 @@ export class ItemService {
                             return a.distance - b.distance
                         })
                     })
+                    // console.log(idLatLonDists);
                     const idNearestItem = idLatLonDists[0].id
                     this.setItemObservable(venueId, idNearestItem);
                     this.activeLanguage$.subscribe((language: string) => {
-                        console.log('called from item.service.ts');
+                        // console.log('called from item.service.ts');
                         this.setLscObservable(venueId, idNearestItem, language)
                         this.setAvailableLanguagesObservable(venueId, idNearestItem, language)
                     })
                 } else {
-                    console.log('no position')
+                    // console.log('no position')
                 }
             })
         } else {
-            console.log('no navigator')
+            // console.log('no navigator')
         }
     }
 

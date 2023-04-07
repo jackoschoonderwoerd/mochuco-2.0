@@ -1,11 +1,30 @@
-<ul #selectLanguageList>
+<ul #selectLanguageList
+    *ngIf="(itemService.availableLanguages$|async)?.length > 0; else notAvailable">
     <li *ngFor="let language of itemService.availableLanguages$|async"
-        (click)="onLanguageSelected(language)">
+        (click)="languageSelected(language)">
         <!-- <div class="{{getFlagIcon(language)}}"></div> -->
-        <button mat-raised-button>
+        <button class="language-btn"
+            mat-raised-button>
             <div class="language">{{language}}</div>
             <!-- <div class="flag {{getFlagIcon(language)}}"></div> -->
         </button>
     </li>
+    <!-- <li>
+        <mat-icon (click)="onClose()"
+            class="close">close</mat-icon>
+    </li> -->
 </ul>
+<ng-template #notAvailable>
+    <p>No other languages available</p>
+</ng-template>
+<div class="close-container">
+    <mat-icon (click)="onClose()"
+        class="close">exit_to_app</mat-icon>
+</div>
+<!-- <div class="n-a"
+    *ngIf="(itemService.availableLanguages$|async) == 0">
+    No languages available
+    <mat-icon (click)="onClose()"
+        class="close">close</mat-icon>
+</div> -->
 <!-- <div class="{{getFlagIcon('german')}}"></div> -->

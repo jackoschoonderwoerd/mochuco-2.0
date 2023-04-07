@@ -41,18 +41,20 @@ export class ScannerComponent implements OnInit {
     }
 
     public scanSuccessHandler(event: any) {
-
+        alert(event);
         const url = new URL(event)
         const queryParameters = url.searchParams;
         const venueId = queryParameters.get('venueId')
         const itemId = queryParameters.get('itemId')
+        this.itemService.setVenueObservable(venueId)
+        this.itemService.setItemObservable(venueId, itemId)
 
-        this.router.navigate(['user'], {
-            queryParams: {
-                venueId: venueId,
-                itemId: itemId
-            }
-        })
+        // this.router.navigate(['user'], {
+        //     queryParams: {
+        //         venueId: venueId,
+        //         itemId: itemId
+        //     }
+        // })
     }
 
     public enableScanner() {

@@ -1,7 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ItemService } from '../item.service';
+
 import { FlagService } from '../../shared/flag.service';
+
+
 
 @Component({
     selector: 'app-item-footer',

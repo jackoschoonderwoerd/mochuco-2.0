@@ -4,34 +4,52 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr;
-    height: 100vh;
+
     max-width: 35rem;
+
     margin: auto;
     app-sidebar {
-        background-color: $my-blue;
-        height: 100vh;
-        position: absolute;
-        color: $my-white;
-        padding: 1rem;
+        position: fixed;
         top: 0;
-        left: 0;
-        max-width: 50%;
-        z-index: 3;
-        overflow: scroll;
+        z-index: 10;
+        width: 50%;
+        max-width: 35rem;
+        background-color: $header-font;
+        height: 100%;
+        // position: fixed;
+        // top: 1;
+        // min-height: 100vh;
+        // color: $my-white;
+        padding: 1rem;
+        // top: 0;
+        // left: 0;
+        // max-width: 50%;
+        // z-index: 10;
+        // overflow: scroll;
+        // transition: width 0.5s;
     }
     app-about {
-        position: absolute;
+        position: fixed;
         z-index: 10;
         max-width: 35rem;
     }
     app-item-header {
+        max-width: 35rem;
+        // height: 3rem;
+        position: fixed;
+        z-index: 5;
+        top: 0;
+        width: 100%;
         background-color: $header-background;
         color: $my-white;
     }
 
     main {
+        // scroll-behavior: smooth;
         background-color: $my-white;
-        overflow: scroll;
+        // overflow: scroll;
+
+        padding: 3rem 0;
         .item-spinner-container {
             display: grid;
             gap: 1rem;
@@ -40,6 +58,10 @@
             justify-content: center;
             padding: 2rem;
             .item-spinner {
+                margin: auto;
+            }
+            .loading-item {
+                margin: auto;
             }
         }
         .img-like {
@@ -48,7 +70,9 @@
                 width: 100%;
             }
             .like {
-                border: 1px solid white;
+                background-color: $header-background;
+                color: $header-font;
+                border: 3px solid $header-font;
                 position: absolute;
                 bottom: 1rem;
                 right: 1rem;
@@ -60,6 +84,10 @@
             justify-content: center;
             padding: 2rem;
             .lsc-spinner {
+                margin: auto;
+            }
+            .loading-lsc {
+                margin: auto;
             }
         }
         .description {
@@ -75,9 +103,42 @@
         }
     }
     app-item-footer {
+        // padding: 0.5rem;
+        max-width: 35rem;
+        // height: 3rem;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
         background-color: $footer-background;
     }
 }
-.display-none {
-    display: none;
+
+.show-about {
+    width: 100vw;
+    left: 0;
+    transition: left 0.5s;
 }
+
+.hide-about {
+    width: 100vw;
+    left: -100vw;
+    transition: left 0.5s;
+}
+
+.show-sidebar {
+    height: 200px;
+    width: 100vw;
+    left: 0;
+    transition: left 0.5s;
+}
+
+.hide-sidebar {
+    height: 200px;
+    width: 100vw;
+    left: -100vw;
+    transition: left 0.5s;
+}
+
+// .hide-sidebar {
+//     display: none;
+// }

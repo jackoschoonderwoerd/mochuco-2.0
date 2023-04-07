@@ -17,11 +17,13 @@ export class ItemComponent implements OnInit {
     liked: boolean = false;
     hideAbout: boolean = true;
 
+
     constructor(
         private route: ActivatedRoute,
         public itemService: ItemService
     ) { }
     ngOnInit(): void {
+        console.log('HIDE ABOUT:', this.hideAbout)
         console.log('item.component.ts')
         this.route.queryParams.subscribe((params: any) => {
             this.venueId = params.venueId;
@@ -39,7 +41,9 @@ export class ItemComponent implements OnInit {
                 })
             } else if (this.venueId && !this.itemId) {
                 console.log('find nearest')
+
                 this.itemService.setVenueObservable(this.venueId);
+
                 this.itemService.findNearestItem(this.venueId)
 
             } else {
@@ -48,11 +52,8 @@ export class ItemComponent implements OnInit {
 
         })
     }
-    languageSelected(language: string) {
-        this.activeLanguage = language;
-        this.hideSidebar = true;
-        this.itemService.setLscObservable(this.venueId, this.itemId, this.activeLanguage);
-    }
+
+
     onLiked() {
         this.itemService.like(this.venueId, this.itemId)
             .then((res) => {
@@ -61,9 +62,20 @@ export class ItemComponent implements OnInit {
             .catch(err => console.log(err));
     }
     showAbout() {
+        console.log('showAbout')
         this.hideAbout = false;
+        console.log('HIDE ABOUT:', this.hideAbout)
     }
     onHideAbout() {
         this.hideAbout = true;
+        console.log('HIDE ABOUT:', this.hideAbout)
+    }
+    onHideSidebar() {
+        this.hideSidebar = true;
+        console.log('onHideSidebar(){}', this.hideSidebar)
+    }
+    onShowSidebar() {
+        console.log('onShowSidebar(){}', this.hideSidebar);
+        this.hideSidebar = false;
     }
 }

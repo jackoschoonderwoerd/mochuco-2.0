@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
                 // this.router.navigate(['admin/venue-details', { venueId: 'E2KYXZLyFHPKVCkSANGx' }])
             }
             else {
-                this.router.navigate(['admin/log-in'])
+                // this.router.navigate(['admin/log-in'])
             }
         })
     }

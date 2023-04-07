@@ -3,9 +3,16 @@
         (click)="onMochucoLogo()"
         src="./../../../../assets/Logo//2023-0101 Mochuco - Logo transparant (1).png"
         alt="">
-    <div class="item-name">
+    <div class="item-name"
+        *ngIf="!(itemService.collectingLscData$|async);else gettingLsc">
         {{(itemService.item$|async)?.name}}
     </div>
+    <ng-template class="getting-lsc"
+        #gettingLsc>
+        <mat-spinner color="warn"
+            [diameter]="25"></mat-spinner>
+    </ng-template>
+    <!-- <div class="main-item-active">{{mainItemActive}}</div> -->
     <img *ngIf="!mainItemActive"
         (click)="onVenueLogo()"
         [src]="(itemService.venue$|async)?.logoUrl"
@@ -17,6 +24,5 @@
         (click)="onVenueLogo()"
         class="exit"
         [inline]="true">exit_to_app</mat-icon>
-
 
 </div>
