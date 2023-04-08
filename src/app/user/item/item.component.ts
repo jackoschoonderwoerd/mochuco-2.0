@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from './item.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { ItemService } from './item.service';
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss']
 })
-export class ItemComponent implements OnInit {
+export class ItemComponent implements OnInit, AfterViewInit {
 
 
     hideSidebar: boolean = true;
@@ -16,11 +16,15 @@ export class ItemComponent implements OnInit {
     activeLanguage: string;
     liked: boolean = false;
     hideAbout: boolean = true;
+    @ViewChild('itemContainer') private itemContainer: ElementRef
+    itemContainerWidth: number;
+
 
 
     constructor(
         private route: ActivatedRoute,
-        public itemService: ItemService
+        public itemService: ItemService,
+        private router: Router
     ) { }
     ngOnInit(): void {
         console.log('HIDE ABOUT:', this.hideAbout)
@@ -53,6 +57,18 @@ export class ItemComponent implements OnInit {
         })
     }
 
+    ngAfterViewInit(): void {
+        // console.log(this.itemContainer.nativeElement.offsetWidth);
+        // this.itemContainerWidth = this.itemContainer.nativeElement.offsetWidth;
+
+    }
+
+    getShowAbout() {
+        return {
+            'left': '100px',
+
+        }
+    }
 
     onLiked() {
         this.itemService.like(this.venueId, this.itemId)
@@ -64,6 +80,7 @@ export class ItemComponent implements OnInit {
     showAbout() {
         console.log('showAbout')
         this.hideAbout = false;
+        // this.getPositionAboutLeft();
         console.log('HIDE ABOUT:', this.hideAbout)
     }
     onHideAbout() {
@@ -77,5 +94,8 @@ export class ItemComponent implements OnInit {
     onShowSidebar() {
         console.log('onShowSidebar(){}', this.hideSidebar);
         this.hideSidebar = false;
+    }
+    onLogInPage() {
+        this.router.navigate(['user/log-in'])
     }
 }

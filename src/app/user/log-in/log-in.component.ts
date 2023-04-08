@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MochucoUser } from './user.model';
-import { AuthService } from './auth.service';
+import { AuthService } from 'src/app/admin/auth/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-log-in',
@@ -13,7 +15,8 @@ export class LogInComponent {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService) { }
+        private authService: AuthService,
+        private router: Router) { }
 
     ngOnInit(): void {
         this.initForm()
@@ -27,5 +30,8 @@ export class LogInComponent {
     onSubmit() {
         const mochucoUser: MochucoUser = this.form.value
         this.authService.logIn(mochucoUser)
+    }
+    onCancel() {
+        this.router.navigate(['user'])
     }
 }

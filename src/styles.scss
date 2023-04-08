@@ -15,7 +15,7 @@ li {
 html,
 body {
     height: 100%;
-    background-color: $my-white;
+    background-color: wheat;
 }
 body {
     margin: 0;
@@ -39,4 +39,7 @@ a {
     background-color: #f44336;
     color: white !important;
     border: none;
+}
+* {
+    box-sizing: border-box;
 }

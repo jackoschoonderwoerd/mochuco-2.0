@@ -8,6 +8,8 @@ import { ItemFooterComponent } from './item/item-footer/item-footer.component';
 import { ItemHeaderComponent } from './item/item-header/item-header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -16,10 +18,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     imports: [
         MatIconModule,
         MatProgressSpinnerModule,
+        MatFormFieldModule,
+        MatInputModule
     ],
     exports: [
         MatIconModule,
         MatProgressSpinnerModule,
+        MatFormFieldModule,
+        MatInputModule
     ]
 })
 export class UserMaterialModule { }

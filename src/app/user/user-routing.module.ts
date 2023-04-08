@@ -4,6 +4,7 @@ import { ItemComponent } from './item/item.component';
 import { ScannerComponent } from './item/scanner/scanner.component';
 import { AdminComponent } from '../admin/admin.component';
 import { AboutComponent } from './about/about.component';
+import { LogInComponent } from './log-in/log-in.component';
 
 const routes: Routes = [
     {
@@ -17,6 +18,10 @@ const routes: Routes = [
     },
     {
         path: 'about', component: AboutComponent
+    },
+    {
+        path: 'log-in',
+        component: LogInComponent
     }
 ];
 

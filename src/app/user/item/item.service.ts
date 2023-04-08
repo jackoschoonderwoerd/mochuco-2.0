@@ -201,6 +201,7 @@ export class ItemService {
     }
 
     findNearestItem(venueId) {
+        console.log('findNearestItem(){}')
         this.collectingItemDataSubject.next(true);
         this.collectingLscDataSubject.next(true);
         return this.itemDetailsDbService.readItems(venueId).subscribe((items: Item[]) => {

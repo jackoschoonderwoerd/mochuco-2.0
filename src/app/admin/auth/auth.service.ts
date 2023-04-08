@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MochucoUser } from './user.model';
+import { MochucoUser } from '../../user/log-in/user.model';
 import {
     Auth,
     createUserWithEmailAndPassword,
@@ -66,7 +66,7 @@ export class AuthService {
                 }
                 this.isLoggedIn = true
                 this.isLoggedInSubject.next(true)
-                this.router.navigate(['admin/venues'])
+                this.router.navigate(['admin'])
             })
             .catch(err => console.log(err));
     }

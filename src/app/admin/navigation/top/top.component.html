@@ -1,5 +1,4 @@
 <mat-toolbar color="primary">
-
     <ul class="menu">
         <li>V1</li>
         <li class="user-id"
@@ -16,10 +15,10 @@
                 routerLink="venues">Venues</button>
         </li>
         <li class="menu-item"
-            routerLink="admin-home"
             routerLinkActive="link-active"
             [routerLinkActiveOptions]="{exact: true}">
             <button mat-raised-button
+                (click)="onHome()"
                 routerLink="">home</button>
         </li>
         <li class="menu-item"

@@ -15,6 +15,9 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './item/sidebar/sidebar.component';
 import { UserMaterialModule } from './user-material.module';
 import { AboutComponent } from './about/about.component';
+import { LogInComponent } from './log-in/log-in.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 
@@ -28,6 +31,7 @@ import { AboutComponent } from './about/about.component';
         ItemHeaderComponent,
         SidebarComponent,
         AboutComponent,
+        LogInComponent
 
     ],
     imports: [
@@ -35,7 +39,9 @@ import { AboutComponent } from './about/about.component';
         UserRoutingModule,
         SharedMaterialModule,
         ZXingScannerModule,
-        UserMaterialModule
+        UserMaterialModule,
+        FormsModule,
+        ReactiveFormsModule
         // SharedModule
     ],
 

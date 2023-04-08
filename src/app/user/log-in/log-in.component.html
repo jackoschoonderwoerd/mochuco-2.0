@@ -12,8 +12,12 @@
                 matInput
                 formControlName="password">
         </mat-form-field>
-        <button mat-raised-button
+        <button class="submit"
+            mat-raised-button
             [disabled]="form.invalid"
             (click)="onSubmit()">submit</button>
+        <button class="cancel"
+            mat-raised-button
+            (click)="onCancel()">cancel</button>
     </form>
 </div>

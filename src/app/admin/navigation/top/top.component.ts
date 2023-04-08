@@ -27,4 +27,7 @@ export class TopComponent implements OnInit {
     onLogOut() {
         this.authService.logOut()
     }
+    onHome() {
+        this.router.navigate(['admin'])
+    }
 }

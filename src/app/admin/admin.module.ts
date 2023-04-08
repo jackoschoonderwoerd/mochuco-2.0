@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { ConfirmComponent } from './shared/confirm/confirm.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ItemDetailsComponent } from './venues/venue-details/item-details/item-details.component';
-import { LogInComponent } from './auth/log-in.component';
+
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { RouterModule } from '@angular/router';
@@ -30,8 +30,7 @@ import { LscTableComponent } from './venues/venue-details/item-details/lsc-table
 import { ItemTableComponent } from './venues/venue-details/item-table/item-table.component';
 import { VenuesTableComponent } from './venues/venues-table/venues-table.component';
 import { VenueNameComponent } from './venues/venue-details/venue-name/venue-name.component';
-import { SnackbarService } from './shared/snackbar.service';
-import { ItemDetailsDbService } from './venues/venue-details/item-details/item-details-db.service';
+
 import { PreviewComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/preview/preview.component';
 import { CoordinatesComponent } from './venues/venue-details/item-details/coordinates/coordinates.component';
 import { MainItemComponent } from './venues/venue-details/item-details/main-item/main-item.component';
@@ -47,7 +46,7 @@ import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.compon
         AdminComponent,
         ConfirmComponent,
         ItemDetailsComponent,
-        LogInComponent,
+
         QrCodeComponent,
         TopComponent,
         VenueDetailsComponent,

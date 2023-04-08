@@ -1,7 +1,5 @@
 <div class="about-container">
 
-
-    <!-- <div class="version">V16</div> -->
     <div *ngIf="(itemService?.activeLanguage$|async) === 'dutch'"
         class="content_nl">
         <div class="header">
@@ -90,9 +88,16 @@
             Mochuco
         </p>
     </div>
-    <div class="close-container"
-        (click)="onHideAbout()">
-        <mat-icon>exit_to_app</mat-icon>
-
+    <div class="buttons">
+        <div class="close-container"
+            (click)="onHideAbout()">
+            <mat-icon>close</mat-icon>
+        </div>
+        <div class="log-in">
+            <button class="log-in-btn"
+                mat-raised-button
+                (click)="onLogin()">Log In (admin only)</button>
+        </div>
     </div>
+
 </div>

@@ -7,7 +7,7 @@ import { ItemComponent } from '../user/item/item.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { VenueDetailsComponent } from './venues/venue-details/venue-details.component';
 import { ItemDetailsComponent } from './venues/venue-details/item-details/item-details.component';
-import { LogInComponent } from './auth/log-in.component';
+
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { ItemLscDescriptionComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-description/item-lsc-description.component';
@@ -28,7 +28,10 @@ const routes: Routes = [
         path: '', component: AdminComponent,
         children: [
             {
-                path: '', component: AdminHomeComponent
+                path: '', component: AdminHomeComponent,
+            },
+            {
+                path: 'admin', component: AdminHomeComponent,
             },
             {
                 path: 'admin-home', component: AdminHomeComponent
@@ -37,7 +40,7 @@ const routes: Routes = [
                 path: 'add-preface', component: AddPrefaceComponent
             },
             {
-                path: 'venues', canActivate: [AuthGuardService],
+                path: 'venues',
                 component: VenuesComponent,
             },
             {
@@ -76,10 +79,7 @@ const routes: Routes = [
                 path: 'main-page',
                 component: MainItemComponent
             },
-            {
-                path: 'log-in',
-                component: LogInComponent
-            },
+
             {
                 path: 'item-lsc-details',
                 component: ItemLscDetailsComponent

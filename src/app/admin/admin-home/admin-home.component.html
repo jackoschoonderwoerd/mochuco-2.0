@@ -1,9 +1,37 @@
 <div class="admin-container">
     <div class="header">Welcome to Mochuco</div>
-    <p>admin works!</p>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eaque, temporibus doloribus. Quasi obcaecati voluptate vel voluptates velit blanditiis veritatis nam.</p>
-    <button mat-raised-button
-        *ngIf="authService.isAdmin$|async"
-        class="preface"
-        (click)="onAddPreface()">add preface</button>
+    <p>You are currently in the administrator environment of the Mochuco app.</p>
+    <p>From here you can add and edit venues, items within the venues and adjust the properties of each of these items.</p>
+
+    <p>A venue has three properties:</p>
+    <ul>
+        <li>A name (This name will not be shown to the user and is for reference only)</li>
+        <li>A logo (appears in the toolbar at the top of the window as soon as a user has scanned the qr-code that is assigned to one of the items in the venue)</li>
+        <li>A collection of items (each accesible by scanning a, for that specific item, unique qr-code)</li>
+    </ul>
+
+    <p>Every item has two different properties:</p>
+    <ul>
+        <li>An image</li>
+        <li>A collection of language specific properties</li>
+    </ul>
+
+    <p>There are three language specific properties</p>
+    <ul>
+        <li>A name</li>
+        <li>A description</li>
+        <li>An audio section</li>
+    </ul>
+
+    <p>While the image for a specific item stays the same, the other three properties can be added or modified in accordance with a previously selected language</p>
+
+    <p>Only one item within each venue can be designated as 'main item'.</p>
+    <p>This main item will have a green background in the item-overview list</p>
+
+    <p>The only way for a user to reach this 'main item' is by clicking on the venue logo in the toolbar at the top of the window.</p>
+
+    <p>It's purpose is to give the user an idea about what the venue in general entails.</p>
+
+    <p>Any other item is meant to give specific information about a particular detail of the venue and can only be reached by scanning it's unique qr-code. </p>
+    <p>As soon as a user scans the qr-code assinged to a specific item. he will automatically be foreward to a page with the relevant information in the language of his choice.</p>
 </div>

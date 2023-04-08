@@ -1,4 +1,9 @@
-<div class="item-container">
+<!-- <div class="cols">
+    <div class="col-1"></div>
+    <div class="col-2"> -->
+
+<div class="item-container"
+    #itemContainer>
 
     <app-sidebar (closeSidebar)="onHideSidebar()"
         [ngClass]="hideSidebar ? 'hide-sidebar': 'show-sidebar'">
@@ -8,51 +13,72 @@
         [ngClass]="hideAbout ? 'hide-about': 'show-about'"
         (hideAbout)="(onHideAbout())">
     </app-about>
-
-    <app-item-header (showAbout)="(showAbout())"></app-item-header>
-
-    <main class="item">
-        <div *ngIf="itemService.collectingItemData$|async"
-            class="item-spinner-container">
-            <mat-spinner class="item-spinner"></mat-spinner>
-            <div class="loading-item">Loading item image...</div>
+    <div class="cols">
 
 
-        </div>
 
-        <div *ngIf="!(itemService.collectingItemData$|async)"
-            class="img-like">
-            <img [src]="(itemService.item$|async)?.imageUrl"
-                alt="">
-            <button mat-mini-fab
-                [disabled]="liked"
-                class="like"
-                color="primary"
-                (click)="onLiked()">
-                <mat-icon>thumb_up_alt</mat-icon>
-            </button>
-        </div>
-        <div *ngIf="(itemService.collectingLscData$|async)"
-            class="lsc-spinner-container">
-            <img src="./../../../assets/Gif/nyc-brooklyn.gif"
-                alt="">
-            <!-- <mat-spinner color="warn"
-                class="lsc-spinner"></mat-spinner>
-            <div class="loading-lsc">Loading LSC...</div> -->
-        </div>
-        <div *ngIf="!(itemService.collectingLscData$|async)"
-            class="lsc">
-            <div class="audio-container"
-                *ngIf="(itemService.lsc$|async)?.audioUrl">
-                <audio [src]="(itemService.lsc$|async)?.audioUrl"
-                    controls></audio>
+        <app-item-header (showAbout)="(showAbout())"></app-item-header>
+        <div class="item">
+            <div class="no-item"
+                *ngIf="!(itemService.venue$|async)">
+                <p>At this stage the data needed to display any information is insufficient.
+                </p>
+                <p>
+                    Using the scanner and scanning a Mochuco qr-code will automatically forward you the information linked to the scanned qr-code.
+                </p>
+                <p>You can activate the scanner by clicking on the scanner icon at the bottom right of this window</p>
+                <p>In case you are administering a venue, and wish to modify the data in this venue, in please log in</p>
+                <button mat-raised-button
+                    (click)="onLogInPage()">log in page</button>
+            </div>
+            <div *ngIf="itemService.collectingItemData$|async"
+                class="item-spinner-container">
+                <mat-spinner class="item-spinner"></mat-spinner>
+                <div class="loading-item">Loading item image...</div>
+
+
             </div>
 
-            <div class="description"
-                [innerHTML]="(itemService.lsc$|async)?.description">
+            <div *ngIf="!(itemService.collectingItemData$|async)"
+                class="img-like">
+                <img [src]="(itemService.item$|async)?.imageUrl"
+                    alt="">
+                <button *ngIf="(itemService.item$|async)?.imageUrl"
+                    [ngClass]="liked ? 'liked':'like'"
+                    mat-mini-fab
+                    [disabled]="liked"
+                    class="like"
+                    color="primary"
+                    (click)="onLiked()">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                </button>
             </div>
-        </div>
+            <div *ngIf="(itemService.collectingLscData$|async)"
+                class="lsc-spinner-container">
+                <img src="./../../../assets/Gif/nyc-brooklyn.gif"
+                    alt="">
+                <!-- <mat-spinner color="warn"
+                            class="lsc-spinner"></mat-spinner>
+                        <div class="loading-lsc">Loading LSC...</div> -->
+            </div>
+            <div *ngIf="!(itemService.collectingLscData$|async)"
+                class="lsc">
+                <div class="audio-container"
+                    *ngIf="(itemService.lsc$|async)?.audioUrl">
+                    <audio [src]="(itemService.lsc$|async)?.audioUrl"
+                        controls></audio>
+                </div>
 
-    </main>
-    <app-item-footer (showSidebar)="onShowSidebar()"></app-item-footer>
-</div>
+                <div class="description"
+                    [innerHTML]="(itemService.lsc$|async)?.description">
+                </div>
+            </div>
+
+        </div>
+        <app-item-footer (showSidebar)="onShowSidebar()"></app-item-footer>
+
+
+    </div>
+    <!-- </div>
+        <div class="col-3"></div>
+    </div> -->
