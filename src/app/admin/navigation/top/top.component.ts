@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { Auth } from '@angular/fire/auth';
+import { Store } from '@ngrx/store';
+import * as fromApp from './../../../app.reducer'
+import { Observable } from 'rxjs';
+
 
 @Component({
     selector: 'app-top',
@@ -10,15 +14,18 @@ import { Auth } from '@angular/fire/auth';
 })
 export class TopComponent implements OnInit {
 
+    authUid$: Observable<string>
+
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
         public authService: AuthService,
-        public afAuth: Auth
+        public afAuth: Auth,
+        private store: Store<fromApp.State>
     ) { }
 
     ngOnInit(): void {
-        // console.log(this.afAuth.currentUser.email)
+        // this.store.subscribe(storeData => console.log(storeData))
+        this.authUid$ = this.store.select(fromApp.getAuthUid);
     }
 
     onVenues() {

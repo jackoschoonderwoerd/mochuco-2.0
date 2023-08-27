@@ -1,0 +1,32 @@
+.admin-container {
+    background-color: white;
+    // .section {
+    //     max-width: calc((100vw - 3rem) / 5);
+    //     pre {
+    //         overflow: hide;
+    //     }
+    // }
+    .header {
+        padding: 0.3rem;
+        border: 1px solid black;
+        align-items: center;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1rem;
+    }
+    .sections {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        margin-top: 1rem;
+
+        .section {
+            max-width: calc((100vw - 10rem) / 6);
+            background-color: wheat;
+            padding: 1rem;
+            margin: 0.3rem;
+            pre {
+                overflow: hidden;
+            }
+        }
+    }
+}

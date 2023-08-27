@@ -24,7 +24,7 @@ export class SidebarComponent {
 
 
     languageSelected(language) {
-        console.log(language);
+        // console.log(language);
         this.itemService.setActiveLanguage(language);
         this.onClose()
     }
@@ -33,7 +33,7 @@ export class SidebarComponent {
         return this.flagService.convertLanguageToCountryCode(language)
     }
     onClose() {
-        console.log('onClose(){}')
+        // console.log('onClose(){}')
         this.closeSidebar.emit(null);
     }
 }

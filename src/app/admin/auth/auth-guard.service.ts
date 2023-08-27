@@ -16,7 +16,7 @@ export class AuthGuardService {
         private router: Router) { }
 
     public canActivate(): boolean {
-        console.log(this.authService.isLoggedIn)
+        // console.log(this.authService.isLoggedIn)
         if (this.afAuth.currentUser) {
             return true
         } else {

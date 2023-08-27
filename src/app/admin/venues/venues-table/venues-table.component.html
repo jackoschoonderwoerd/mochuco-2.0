@@ -1,6 +1,5 @@
 <div class="app-table-container"
     *ngIf="venues?.length > 0">
-
     <mat-form-field>
         <mat-label>Filter</mat-label>
         <input matInput
@@ -70,7 +69,7 @@
                 class="delete-td"
                 *matCellDef="let element"><button mat-mini-fab
                     color="warn"
-                    (click)="onDelete(element.id)">
+                    (click)="onDeleteVenue(element.id)">
                     <mat-icon>delete</mat-icon>
                 </button></td>
         </ng-container>
@@ -83,7 +82,7 @@
                 class="edit-td"
                 *matCellDef="let element"><button mat-mini-fab
                     color="primary"
-                    (click)="onEdit(element.id)">
+                    (click)="onDetails(element.id)">
                     <mat-icon>search</mat-icon>
                 </button></td>
         </ng-container>

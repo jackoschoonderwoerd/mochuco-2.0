@@ -1,0 +1,116 @@
+<div class="admin-container">
+    <!-- {{venue$|async|json}} <br><br>
+    {{item$|async|json}} -->
+
+
+    <div class="location">
+        <div *ngIf="!editItemMode"
+            class="header">Creating item in venue: <span>{{(venue$|async)?.venueName}}</span>
+        </div>
+        <div *ngIf="editItemMode"
+            class="header">venue name: <span> {{(venue$|async)?.venueName}}</span>
+        </div>
+    </div>
+
+    <div class="item-general">
+        <div class="header names"
+            *ngIf="editItemMode">
+            <div class="item-name"
+                *ngIf="item$|async">
+                <div class="title">item:</div>
+                <div>{{(item$|async)?.name}}</div>
+            </div>
+            <div class="id">{{(item$|async)?.id}}</div>
+            <button mat-raised-button
+                color="primary"
+                (click)="onEditItemName()">
+                <mat-icon>edit</mat-icon> item name
+            </button>
+        </div>
+        <div class="image-input"
+            *ngIf="editItemMode">
+            <div class="header">item image</div>
+            <input #fileInput
+                style="display: none;"
+                type="file"
+                (change)="onItemImageFileInputChange($event)">
+            <div class="image-container">
+                <img [src]="(item$|async)?.imageUrl"
+                    alt="no image selected">
+            </div>
+            <button mat-raised-button
+                color="primary"
+                (click)="fileInput.click()">{{(item$|async)?.imageUrl ? 'change image': 'select image file'}}</button>
+            <button class="delete-image"
+                *ngIf="(item$|async)?.imageUrl"
+                mat-raised-button
+                color="warn"
+                (click)="onDeleteImage()">delete image</button>
+        </div>
+        <div class="coordinates">
+            <div class="header">coordinates</div>
+
+            <div class="latitude"
+                *ngIf="(item$|async)?.latitude">
+                <div class="title">latitude:</div>
+                <div class="">{{(item$|async).latitude}}</div>
+            </div>
+            <div class="longitude"
+                *ngIf="(item$|async)?.longitude">
+                <div class="title">longitude:</div>
+                <div class="">{{(item$|async).longitude}}</div>
+            </div>
+            <button mat-raised-button
+                color="primary"
+                (click)="onAddCoordinates()">
+                <mat-icon>search</mat-icon>coordinates
+            </button>
+
+        </div>
+        <div class="main-item"
+            *ngIf="(item$|async) && (item$|async).isMainItem">
+            <div class="header">main item</div>
+            <div class="current-status">
+                <div class="title">current status:</div>
+                <div class="">
+                    {{(item$|async).isMainItem}}
+                </div>
+            </div>
+            <button mat-raised-button
+                color="primary"
+                (click)="onMainPage()">
+                <mat-icon>search</mat-icon>main item
+            </button>
+
+
+        </div>
+    </div>
+
+    <div class="language-specific-content">
+
+        <div class="header">Languages for item: <span>{{(item$|async)?.name}}</span></div>
+        <app-lsc-table [venueId]="venueId"
+            [itemId]="itemId">
+        </app-lsc-table>
+
+        <button mat-raised-button
+            color="primary"
+            *ngIf="!addingLanguageMode && !languageSelectedMode"
+            class="add-language"
+            (click)="onAddLanguage()">add language</button>
+        <mat-form-field *ngIf="addingLanguageMode">
+            <mat-label>select language</mat-label>
+            <mat-select (selectionChange)="onLanguageSelected($event)"
+                [(ngModel)]="selectedLanguage">
+                <mat-option *ngFor="let language of languageOptions"
+                    [value]="language">{{language}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <button class="back-to-venue-details"
+        mat-raised-button
+        color="primary"
+        (click)="onBackToItems()">back to items</button>
+
+
+</div>

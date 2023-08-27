@@ -15,8 +15,9 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './item/sidebar/sidebar.component';
 import { UserMaterialModule } from './user-material.module';
 import { AboutComponent } from './about/about.component';
-import { LogInComponent } from './log-in/log-in.component';
+import { LogInComponent } from '../admin/auth/log-in/log-in.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserErrorPageComponent } from './user-error-page/user-error-page.component';
 
 
 
@@ -31,7 +32,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         ItemHeaderComponent,
         SidebarComponent,
         AboutComponent,
-        LogInComponent
+        LogInComponent,
+        UserErrorPageComponent
 
     ],
     imports: [

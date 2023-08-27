@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VenuesService } from '../venues.service';
+import { VenuesService } from 'src/app/admin/services/venues.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -18,9 +18,9 @@ export class StatsComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe((params: any) => {
             const venueId = params.venueId;
-            console.log(venueId);
+            // console.log(venueId);
             this.venuesService.readStats(venueId).subscribe((stats: any) => {
-                console.log(stats);
+                // console.log(stats);
                 this.stats = stats
             })
         })

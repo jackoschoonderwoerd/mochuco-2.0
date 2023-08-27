@@ -21,20 +21,18 @@ export class AboutComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        console.log(screen.width)
-        console.log(window.innerWidth)
         this.itemService.activeLanguage$.subscribe((activeLanguage: string) => {
             this.activeLanguage = activeLanguage
         })
     }
 
     onHideAbout() {
-        console.log('onHideAbout(){}')
+        // console.log('onHideAbout(){}')
         this.hideAbout.emit();
     }
     onLogin() {
-        console.log(screen.width)
-        console.log(window.innerWidth)
+        // console.log(screen.width)
+        // console.log(window.innerWidth)
         if (window.innerWidth < 1400) {
             this.dialog.open(WarningComponent, {
                 data: {

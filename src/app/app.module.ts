@@ -1,3 +1,5 @@
+// https://www.npmjs.com/package/ngrx-store-localstorage
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -12,8 +14,13 @@ import { environment } from '../environments/environment';
 // import { SharedModule } from './shared/shared.module.tsXXX';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material.module';
-import { ItemDetailsDbService } from './admin/venues/venue-details/item-details/item-details-db.service';
-import { VenuesService } from './admin/venues/venues.service';
+import { ItemDetailsDbService } from './admin/services/item-details-db.service';
+import { VenuesService } from './admin/services/venues.service';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AdminEffects } from './admin/store/admin.effects';
+// import { storageSyncMetaReducer } from 'ngrx-store-persist';
 
 
 
@@ -34,7 +41,9 @@ import { VenuesService } from './admin/venues/venues.service';
         provideFunctions(() => getFunctions()),
         provideStorage(() => getStorage()),
         BrowserAnimationsModule,
-        AppMaterialModule
+        AppMaterialModule,
+        StoreModule.forRoot(reducers),
+        EffectsModule.forRoot([AdminEffects])
 
 
     ],

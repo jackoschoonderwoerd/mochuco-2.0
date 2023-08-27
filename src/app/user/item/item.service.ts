@@ -1,19 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import {
-    Storage,
-    ref,
-    deleteObject,
-    uploadBytes,
-    uploadString,
-    uploadBytesResumable,
-    percentage,
-    getDownloadURL,
-    getMetadata,
-    provideStorage,
-    getStorage,
-    getBytes,
-} from '@angular/fire/storage';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
     Firestore,
     addDoc,
@@ -32,10 +18,9 @@ import {
     increment
 } from '@angular/fire/firestore';
 import { Item } from 'src/app/shared/item.model';
-import { LSContent } from '../../shared/item.model';
-import { Venue } from '../../admin/venues/venues.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ItemDetailsDbService } from 'src/app/admin/venues/venue-details/item-details/item-details-db.service';
+import { Venue, LSContent } from '../../shared/item.model';
+
+import { Router } from '@angular/router';
 
 export interface ItemVisit {
     timestamp: number,
@@ -46,8 +31,20 @@ export interface ItemVisit {
 
 export interface IdLatLon {
     id: string;
+    name: string
     lat: number;
     lon: number;
+}
+
+export interface PreviouslyVisitedItem {
+    id: string;
+    timestamp: number;
+}
+export interface ItemIdNameDistance {
+    name: string,
+    id: string,
+    distance: number,
+    isMainItem?: boolean
 }
 
 
@@ -57,6 +54,7 @@ export interface IdLatLon {
 export class ItemService {
 
     activeVisitId: string;
+    defaultLanguage: string = 'dutch'
 
     private venueSubject = new BehaviorSubject<Venue>(null);
     public venue$ = this.venueSubject.asObservable();
@@ -67,7 +65,7 @@ export class ItemService {
     private lscSubject = new BehaviorSubject<LSContent>(null)
     public lsc$ = this.lscSubject.asObservable();
 
-    private activeLanguageSubject = new BehaviorSubject<string>('dutch')
+    private activeLanguageSubject = new BehaviorSubject<string>(this.defaultLanguage)
     public activeLanguage$ = this.activeLanguageSubject.asObservable()
 
     private availableLanguagesSubject = new BehaviorSubject<string[]>(null);
@@ -79,182 +77,484 @@ export class ItemService {
     private collectingItemDataSubject = new BehaviorSubject<boolean>(false)
     public collectingItemData$ = this.collectingItemDataSubject.asObservable();
 
+    private itemsNameAndDistanceSubject = new BehaviorSubject<any>(null)
+    public itemsNameAndDistance$ = this.itemsNameAndDistanceSubject.asObservable();
+
+    private selectableLanguagesSubject = new BehaviorSubject<string[]>(null);
+    public selectableLanguages$ = this.selectableLanguagesSubject.asObservable();
+
+    private orderedItemsIdNameSubject = new BehaviorSubject<ItemIdNameDistance[]>(null);
+    public orderedItemsIdName$ = this.orderedItemsIdNameSubject.asObservable();
+
+
+    previouslyVisitedItems: PreviouslyVisitedItem[] = []
+    languageAvailable: boolean = false;
+
+
     constructor(
         private firestore: Firestore,
-        private itemDetailsDbService: ItemDetailsDbService
+        private router: Router
     ) { }
 
-    setVenueObservable(venueId: string) {
-        // console.log('setVenueObservable(){}')
+
+    readVenue(venueId) {
+        // console.log('readVenue: ', venueId)
         const venueRef = doc(this.firestore, `venues/${venueId}`);
         return docData(venueRef, { idField: 'id' })
-            .subscribe((venue: Venue) => {
-                this.venueSubject.next(venue);
-            })
+    }
+    readItems(venueId) {
+        // console.log('readItems: ', venueId)
+        const itemsRef = collection(this.firestore, `venues/${venueId}/items`);
+        return collectionData(itemsRef, { idField: 'id' });
+    }
+    readItem(venueId, itemId) {
+        // console.log('readItem:', venueId, itemId)
+        // console.log(venueId, itemId);
+        const itemRef = doc(this.firestore, `venues/${venueId}/items/${itemId}`)
+        return docData(itemRef, { idField: 'id' })
+    }
+    readLanguages(venueId, itemId) {
+        const languagesRef = collection(this.firestore, `venues/${venueId}/items/${itemId}/languages`)
+        return collectionData(languagesRef)
     }
 
-    setItemObservable(venueId: string, itemId: string) {
-        this.collectingItemDataSubject.next(true)
-        // console.log('setItemObservable(){}', venueId, itemId);
-        if (itemId != null) {
+    async setObservables(venueId: string, itemId?: string) {
+        // console.log('setObservables(){} ', venueId, itemId);
+        if (!venueId) {
+            // console.log('no no venueId')
+        } else if (venueId && !itemId) {
+            console.log(venueId, 'no itemId, looking for nearest')
+            this.findAndSortAllItems(venueId)
+            this.setVenueObservable(venueId)
+            this.setItemObservable(venueId)
+            this.nearestItem(venueId).then((nearestItem: Item) => {
+                this.checkAvailability(venueId, nearestItem.id).then((isAvailable: boolean) => {
+                    if (isAvailable) {
+                        // console.log(venueId, 'no itemId, looking for nearest, language available')
+                        // console.log(nearestItem);
+                        const nearestItemId = nearestItem.id;
+                        this.setItemObservable(venueId, nearestItemId)
+                        this.setLscObservable(venueId, nearestItemId)
+                    } else {
+                        if (confirm('not available in selected language, reverting do default')) {
+                            // console.log(venueId, 'no itemId, looking for nearest, language not available reverting to default language')
+                            this.setActiveLanguage(this.defaultLanguage)
+                            this.setItemObservable(venueId, nearestItem.id)
+                            this.setLscObservable(venueId, nearestItem.id)
 
-            this.addVisit(venueId, itemId);
-
-            const itemRef = doc(this.firestore, `venues/${venueId}/items/${itemId}`)
-            return docData(itemRef, { idField: 'id' })
-                .subscribe((item: Item) => {
-                    this.collectingItemDataSubject.next(false)
-                    this.itemSubject.next(item);
+                        }
+                    }
                 })
+            })
+        } else {
+            // console.log('venueId and itemId present', venueId, itemId)
+            await this.checkAvailability(venueId, itemId).then((isAvailable: boolean) => {
+                if (isAvailable) {
+                    // console.log('venueId and itemId present language available', venueId, itemId)
+                    this.setVenueObservable(venueId)
+                    this.findAndSortAllItems(venueId);
+                    this.setItemObservable(venueId, itemId);
+                    this.setLscObservable(venueId, itemId);
+                } else {
+                    // console.log('venueId and itemId present language NOT available reverting to default', venueId, itemId)
+                    if (confirm('not available in selected language, reverting do default')) {
+                        this.setActiveLanguage(this.defaultLanguage);
+                        this.setVenueObservable(venueId)
+                        this.findAndSortAllItems(venueId);
+                        this.setItemObservable(venueId, itemId);
+                        this.setLscObservable(venueId, itemId);
+                    }
+                }
+            })
         }
     }
 
-    setLscObservable(venueId: string, itemId: string, language: string) {
-        this.collectingLscDataSubject.next(true);
-        //    CHECK IF LANGUAGE IS AVAILABLE ELSE GO DUTCH
 
-        const lscRef = doc(this.firestore, `venues/${venueId}/items/${itemId}/languages/${language}`)
-        docData(lscRef)
-            .subscribe((lsc: LSContent) => {
-                if (lsc) {
-                    // console.log(lsc)
-                    this.collectingLscDataSubject.next(false);
-                    this.lscSubject.next(lsc);
-                } else {
-                    console.log('no lsc')
-                    this.findNearestItem(venueId);
-                    // language = 'dutch'
-                    // const lscRef = doc(this.firestore, `venues/${venueId}/items/${itemId}/languages/${language}`)
-                    // docData(lscRef).subscribe((lsc: LSContent) => {
-                    //     this.lscSubject.next(lsc)
-                    //     this.collectingLscDataSubject.next(false)
-                    // })
-                }
+
+    private checkAvailability(venueId, itemId) {
+        // console.log('checkAvailability(){}')
+        var isAvailable = new Promise((resolve, reject) => {
+
+            const sub = this.activeLanguage$.subscribe((language: string) => {
+                return this.readLanguages(venueId, itemId).subscribe((lscs: LSContent[]) => {
+                    // console.log('checkAvailability(){} lscs: ', lscs);
+                    // console.log('checkAvailability(){} language: ', language)
+                    const availableLscs = lscs.filter((lsc: LSContent) => {
+                        return lsc.language === language
+                    })
+                    // console.log(availableLscs.length)
+                    if (availableLscs.length > 0) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+
+                    }
+                })
             })
+            sub.unsubscribe();
+        })
+        return isAvailable
     }
 
-    languageAvailable(venueId, itemId, language) {
-        console.log('languagesAvailabel(){}', venueId, itemId, language)
+
+    setVenueObservable(venueId: string) {
+        if (!venueId) {
+            this.router.navigate(['user/user-error-page', { message: 'no venueId' }])
+        } else {
+            this.readVenue(venueId).subscribe((venue: Venue) => {
+                this.venueSubject.next(venue)
+            })
+        }
+    }
+
+    setItemObservable(venueId: string, itemId?: string,) {
+        // console.log('setItemObservable(){}: ', venueId, itemId);
+        this.collectingItemDataSubject.next(true)
+        this.readItem(venueId, itemId).subscribe((item: Item) => {
+            // console.log(item)
+            this.itemSubject.next(item);
+            this.collectingItemDataSubject.next(false)
+            this.router.navigateByUrl('user');
+            this.addVisit(venueId, itemId)
+        })
+    }
+
+
+    setLscObservable(venueId, itemId: string) {
+        // console.log('setLscObservable(){} ', venueId, itemId);
+        this.setSelectableLanguagesSubject(venueId, itemId)
+        this.activeLanguage$.subscribe((activeLanguage: string) => {
+            // console.log(activeLanguage)
+            const lscRef = doc(this.firestore, `venues/${venueId}/items/${itemId}/languages/${activeLanguage}`)
+            // console.log(venueId, itemId);
+            docData(lscRef).subscribe((language: LSContent) => {
+                this.lscSubject.next(language);
+                this.collectingLscDataSubject.next(false);
+            })
+        })
+        // this.getActiveLanguage().then((activeLanguage: string) => {
+        //     console.log(activeLanguage)
+        //     const lscRef = doc(this.firestore, `venues/${venueId}/items/${itemId}/languages/${activeLanguage}`)
+        //     console.log(venueId, itemId);
+        //     docData(lscRef).subscribe((lsc: LSContent) => {
+        //         this.lscSubject.next(lsc);
+        //         this.collectingLscDataSubject.next(false);
+        //     })
+        // })
+    }
+
+
+    setSelectableLanguagesSubject(venueId: string, itemId: string) {
+        // console.log('setSelectableLanguagesSubject(){} ', venueId, itemId);
         const lscsRef = collection(this.firestore, `venues/${venueId}/items/${itemId}/languages`)
         collectionData(lscsRef).subscribe((lscs: LSContent[]) => {
-            const availableLanguages: string[] = [];
+            const usedLanguages: string[] = [];
             lscs.forEach((lsc: LSContent) => {
-                availableLanguages.push(lsc.language)
+                usedLanguages.push(lsc.language);
+                this.activeLanguage$.subscribe((activeLanguage: string) => {
+                    const selectableLanguages = usedLanguages.filter((selsectableLanguage: string) => {
+                        return selsectableLanguage != activeLanguage
+                    })
+                    this.selectableLanguagesSubject.next(selectableLanguages);
+                })
             })
-            if (availableLanguages.indexOf(language) == -1) {
-                console.log('language unavailable')
-                return false
-            } else {
-                return true
+        })
+        // sub.unsubscribe()
+    }
+
+    itemsDistances(venueId: string) {
+        // console.log('itemsDistances(){}')
+        var barTwo = new Promise((res, reject) => {
+            this.readItems(venueId).subscribe((items: Item[]) => {
+                const itemsIdNameDistance: ItemIdNameDistance[] = []
+                if (items) {
+                    var bar = new Promise((resolve, reject) => {
+                        items.forEach((item: Item, index, array) => {
+                            this.getDistanceFromUser(item.latitude, item.longitude)
+                                .subscribe((distance: number) => {
+                                    itemsIdNameDistance.push({
+                                        name: item.name,
+                                        id: item.id,
+                                        distance: distance
+                                    })
+                                    if (index <= 0) {
+                                        resolve(itemsIdNameDistance)
+                                    } else {
+
+                                    }
+                                })
+                        })
+                    })
+                    res(bar)
+                }
+            })
+        })
+        return barTwo
+    }
+    sortItemsDistances(venueId) {
+        // console.log('sortItemsDistances(){}')
+        const itemsDistancesPr = new Promise((resolve, reject) => {
+            this.itemsDistances(venueId).then((itemsDistances: any) => {
+                itemsDistances.sort((a, b) => {
+                    if (a.distance < b.distance) {
+                        return -1
+                    }
+                    if (a.distance > b.distance) {
+                        return 1
+                    }
+                    // console.log(0)
+                    return 0
+                })
+                resolve(itemsDistances)
+            })
+        })
+        return itemsDistancesPr
+    }
+
+    private nearestItem(venueId) {
+        // console.log('nearestItem(){}')
+        const nearest = new Promise((resolve, reject) => {
+            this.sortItemsDistances(venueId).then((sortedItems: Item[]) => {
+                resolve(sortedItems[0])
+            })
+        })
+        return nearest
+    }
+
+    private findAndSortAllItems(venueId: string) {
+        // console.log('findAndSortAllItems(){}')
+        this.readItems(venueId).subscribe((items: Item[]) => {
+            const itemsIdNameDistance: ItemIdNameDistance[] = []
+            if (items) {
+                var bar = new Promise((resolve, reject) => {
+                    items.forEach((item: Item, index, array) => {
+                        this.getDistanceFromUser(item.latitude, item.longitude)
+                            .subscribe((distance: number) => {
+                                itemsIdNameDistance.push({
+                                    name: item.name,
+                                    id: item.id,
+                                    distance: distance,
+                                    isMainItem: item.isMainItem
+                                })
+                                if (index <= 0) {
+                                    resolve(itemsIdNameDistance)
+                                } else {
+
+                                }
+                            })
+                    })
+                })
+                bar.then((itemsIdNameDistance: ItemIdNameDistance[]) => {
+                    itemsIdNameDistance = this.sortItemsIdNameDistance(itemsIdNameDistance)
+                    // console.log(itemsIdNameDistance);
+                    this.orderedItemsIdNameSubject.next(itemsIdNameDistance);
+                    // this.idNearestItemSubject.next(itemsIdNameDistance[0].id)
+                })
             }
         })
     }
 
-    setAvailableLanguagesObservable(venueId: string, itemId: string, activeLanguage: string) {
-        // console.log('setAvailableLanguagesObservable(){}', venueId, itemId, activeLanguage);
-        const languagesRef = collection(this.firestore, `venues/${venueId}/items/${itemId}/languages`)
-        collectionData(languagesRef).subscribe((lscs: LSContent[]) => {
-            const availableLanguages: string[] = [];
-            lscs.forEach((lsc: LSContent) => {
-                availableLanguages.push(lsc.language);
-                // const availableLanguagesMinusActiveLanguage:string[] = []
-                const availableLanguagesMinusActiveLanguage = availableLanguages.filter((availableLanguage: string) => {
-                    return availableLanguage != activeLanguage;
-                })
-                // this.availableLanguagesSubject.next(availableLanguages)
-                this.availableLanguagesSubject.next(availableLanguagesMinusActiveLanguage)
-            })
+    private sortItemsIdNameDistance(itemsIdNameDistance: ItemIdNameDistance[]) {
+        // console.log('sortItemsIdNameDistance(){}')
+        itemsIdNameDistance = this.removeMainItem(itemsIdNameDistance)
+        itemsIdNameDistance.sort((a, b) => {
+            if (a.distance < b.distance) {
+                return -1
+            }
+            if (a.distance > b.distance) {
+                return 1
+            }
+            // console.log(0)
+            return 0
         })
+        return itemsIdNameDistance
     }
+
+    private removeMainItem(itemsNameAndDistances: ItemIdNameDistance[]) {
+        // console.log('removeMainItem: ', itemsNameAndDistances)
+        const itemsMainRemoved = itemsNameAndDistances.filter((item: ItemIdNameDistance) => {
+            return !item.isMainItem == true
+        })
+        // console.log('itemsMainRemoved: ', itemsMainRemoved)
+        return itemsMainRemoved;
+    }
+
+    private getDistanceFromUser(itemLatitude: number, itemLongitude: number) {
+        // console.log('getDistanceFromUser(){}')
+        if (!navigator) {
+            this.router.navigate(['/user/user-error-page', { message: 'no navigator' }])
+        } else {
+            const distanceToObject = new Observable(observer => {
+                navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+                    if (!position) {
+                        this.router.navigate(['/user/user-error-page', { message: 'can\'t determinate users geolocation' }])
+                    } else {
+                        const userLat = position.coords.latitude;
+                        const userLon = position.coords.longitude;
+                        const distanceFromObject = this.distanceFromObject(userLat, userLon, itemLatitude, itemLongitude);
+                        observer.next(distanceFromObject);
+                        observer.complete();
+                    }
+                })
+            })
+
+            return distanceToObject
+        }
+    }
+
+
     setActiveLanguage(language: string) {
+        // console.log('setActiveLanguage: ', language);
         this.activeLanguageSubject.next(language);
     }
-    getMainItem(venueId): Observable<any> {
-        this.collectingItemDataSubject.next(true);
-        this.collectingLscDataSubject.next(true);
-        const itemsRef = collection(this.firestore, `venues/${venueId}/items`);
-        const mainItemQuery = query(itemsRef, where('isMainItem', '==', true))
-        return collectionData(mainItemQuery, { idField: 'id' })
+
+    getActiveLanguage() {
+        // console.log('getActiveLanguage')
+        const activeLanguagePr = new Promise((resolve, reject) => {
+            this.activeLanguage$.subscribe((activeLanguage: string) => {
+                // console.log(activeLanguage)
+                resolve(activeLanguage)
+            })
+        })
+        return activeLanguagePr
     }
+
+    getVenueId(): Promise<any> {
+        // console.log('getVenueId(){}')
+        const venueIdPr = new Promise((resolve, reject) => {
+            this.venue$.subscribe((venue: Venue) => {
+                resolve(venue.id)
+            })
+        })
+        return venueIdPr
+    }
+
+    getMainiItemId(): Promise<string> {
+        // console.log('getMainItemId(){}')
+        const mainItemIdPr = new Promise<string>((resolve, reject) => {
+            this.venue$.subscribe((venue: Venue) => {
+
+                this.readItems(venue.id).subscribe((items: Item[]) => {
+                    const mainItems = items.filter((item: Item) => {
+                        return item.isMainItem
+                    })
+                    const mainItem = (mainItems[0])
+                    // console.log(mainItem.id)
+                    resolve(mainItem.id)
+                })
+            })
+        })
+        return mainItemIdPr
+    }
+
+    setMainItem(): void {
+        // console.log('setMainItem(){}')
+        const sub = this.venue$.subscribe((venue: Venue) => {
+            this.readItems(venue.id).subscribe((items: Item[]) => {
+                const mainItems: Item[] = items.filter((item: Item) => {
+                    return item.isMainItem == true
+                })
+                const mainItem = mainItems[0]
+                // console.log(mainItem)
+                this.setObservables(venue.id, mainItem.id)
+            })
+            sub.unsubscribe();
+        })
+    }
+
 
     addVisit(venueId: string, itemId: string) {
         const itemVisit: ItemVisit = {
             timestamp: new Date().getTime(),
             liked: false,
-
         }
         const visitRef = collection(this.firestore, `venues/${venueId}/visitsLog/${itemId}/visits`)
-        return addDoc(visitRef, itemVisit)
+        addDoc(visitRef, itemVisit)
             .then((docRef: any) => {
-                this.activeVisitId = docRef.id
+                this.activeVisitId = docRef.id;
+                console.log('visit added')
             })
             .catch(err => {
                 // console.log(err);
             })
     }
 
-    like(venueId: string, itemId: string) {
-        const visitRef = doc(this.firestore, `venues/${venueId}/visitsLog/${itemId}/visits/${this.activeVisitId}`);
-        return updateDoc(visitRef, { liked: true })
-            .then((res: any) => { })
-            .catch(err => console.error(err));
+    like() {
+        const likePr = new Promise((resolve, reject) => {
+            const sub = this.venue$.subscribe((venue: Venue) => {
+                const subTwo = this.item$.subscribe((item: Item) => {
+                    const visitRef = doc(this.firestore, `venues/${venue.id}/visitsLog/${item.id}/visits/${this.activeVisitId}`);
+                    // const visitRef = doc(this.firestore, `venues/${venue.id}/visitsLog/${item.id}/visits/123`);
+                    // return updateDoc(visitRef, { liked: true })
+                    resolve(updateDoc(visitRef, { liked: true }))
+                })
+                subTwo.unsubscribe();
+            })
+            sub.unsubscribe();
+        })
+        return likePr
     }
 
     findNearestItem(venueId) {
-        console.log('findNearestItem(){}')
-        this.collectingItemDataSubject.next(true);
-        this.collectingLscDataSubject.next(true);
-        return this.itemDetailsDbService.readItems(venueId).subscribe((items: Item[]) => {
-            const idLatLons: IdLatLon[] = [];
-            items.forEach((item: Item) => {
-                const idLatLon: IdLatLon = {
-                    id: item.id,
-                    lat: parseFloat(item.latitude),
-                    lon: parseFloat(item.longitude)
-                }
-                idLatLons.push(idLatLon);
-            })
-            this.porcessIdLatLons(idLatLons, venueId)
+        // console.log('findNearestItem(){}', venueId);
+        // this.collectingItemDataSubject.next(true);
+        // this.collectingLscDataSubject.next(true);
+        // return this.itemDetailsDbService.readItems(venueId).subscribe((items: Item[]) => {
+        //     const idLatLons: IdLatLon[] = [];
+        //     items.forEach((item: Item) => {
+        //         const idLatLon: IdLatLon = {
+        //             id: item.id,
+        //             name: item.name,
+        //             lat: parseFloat(item.latitude),
+        //             lon: parseFloat(item.longitude)
+        //         }
+        //         idLatLons.push(idLatLon);
+        //     })
+        //     this.processIdLatLons(idLatLons, venueId)
 
-        })
+        // })
     }
-    porcessIdLatLons(idLatLons: IdLatLon[], venueId) {
-        if (navigator) {
-            navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-                if (position) {
-                    const userLat = position.coords.latitude;
-                    const userLon = position.coords.longitude;
-                    let idLatLonDists = []
-                    idLatLons.forEach((idLatLon) => {
-                        const userDistanceToItem = Math.round(this.distanceFromObject(
-                            userLat,
-                            userLon,
-                            idLatLon.lat,
-                            idLatLon.lon
-                        ))
-                        idLatLonDists.push({
-                            id: idLatLon.id,
-                            distance: userDistanceToItem
-                        });
-                        idLatLonDists = idLatLonDists.sort((a, b) => {
-                            return a.distance - b.distance
-                        })
-                    })
-                    // console.log(idLatLonDists);
-                    const idNearestItem = idLatLonDists[0].id
-                    this.setItemObservable(venueId, idNearestItem);
-                    this.activeLanguage$.subscribe((language: string) => {
-                        // console.log('called from item.service.ts');
-                        this.setLscObservable(venueId, idNearestItem, language)
-                        this.setAvailableLanguagesObservable(venueId, idNearestItem, language)
-                    })
-                } else {
-                    // console.log('no position')
-                }
-            })
-        } else {
-            // console.log('no navigator')
-        }
+
+    private processIdLatLons(idLatLons: IdLatLon[], venueId) {
+        // if (navigator) {
+        //     navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+        //         if (position) {
+        //             const userLat = position.coords.latitude;
+        //             const userLon = position.coords.longitude;
+        //             let idNameLatLonDists = []
+        //             idLatLons.forEach((idLatLon) => {
+        //                 const userDistanceToItem = Math.round(this.distanceFromObject(
+        //                     userLat,
+        //                     userLon,
+        //                     idLatLon.lat,
+        //                     idLatLon.lon
+        //                 ))
+        //                 idNameLatLonDists.push({
+        //                     id: idLatLon.id,
+        //                     name: idLatLon.name,
+        //                     distance: userDistanceToItem
+        //                 });
+        //                 idNameLatLonDists = idNameLatLonDists.sort((a, b) => {
+        //                     return a.distance - b.distance
+        //                 })
+        //             })
+        //             // // console.log(idNameLatLonDists);
+        //             this.itemsNameAndDistanceSubject.next(idNameLatLonDists);
+        //             const idNearestItem = idNameLatLonDists[0].id
+        //             this.setItemObservable(venueId, idNearestItem);
+
+        //             this.activeLanguage$.subscribe((language: string) => {
+        //                 // // // console.log('called from item.service.ts');
+        //                 this.setLscObservable(venueId, idNearestItem)
+        //                 this.setSelectableLanguagesSubject(venueId, idNearestItem);
+        //             })
+        //         } else {
+        //             // // // console.log('no position')
+        //         }
+        //     })
+        // } else {
+        //     // // // console.log('no navigator')
+        // }
     }
 
     distanceFromObject(latObject: number, lonObject: number, latVisitor: number, lonVisitor: number) {  // generally used geo measurement function
@@ -266,6 +566,6 @@ export class ItemService {
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         var d = R * c;
-        return d * 1000; // meters
+        return Math.round(d * 1000); // meters
     }
 }

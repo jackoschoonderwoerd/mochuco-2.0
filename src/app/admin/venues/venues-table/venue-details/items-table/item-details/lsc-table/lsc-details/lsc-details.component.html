@@ -1,0 +1,78 @@
+<div class="admin-container">
+    <main>
+        <!-- {{lsc$|async|json}} -->
+        <div class="preview-container">
+            <app-preview>
+            </app-preview>
+        </div>
+
+        <div class="location">
+            <!-- <div class="editmode">{{editmode}}</div> -->
+            <div class="title ">venue:</div>
+            <div class="content header">{{(venue$|async)?.venueName}}</div>
+            <div class="title ">name:</div>
+            <div class="content header">{{(item$|async)?.name}}</div>
+            <div class="title ">language:</div>
+            <div class="content header">{{language}}</div>
+        </div>
+
+        <div class="lsc">
+            <div class="name">
+                <div class="col-1">name</div>
+                <button class="col-2"
+                    mat-mini-fab
+                    color="primary"
+                    (click)="onEditName()">
+                    <mat-icon fontIcon="edit"></mat-icon>
+
+                </button>
+                <div class="col-3">{{(lsc$|async)?.name}}</div>
+            </div>
+            <div class="description">
+                <div class="col-1">description</div>
+                <button mat-mini-fab
+                    color="primary"
+                    class="col-2"
+                    (click)="onEditDescription()">
+                    <mat-icon fontIcon="edit"></mat-icon>
+
+                </button>
+                <div class="col-3">{{(lsc$|async)?.description}}</div>
+
+            </div>
+            <div class="audio">
+                <div class="col-1">audio</div>
+                <div class="col-2">
+                    <input type="file"
+                        #audioFileInput
+                        style="display: none;"
+                        (change)="audioSelected($event)">
+                    <button mat-mini-fab
+                        class="edit"
+                        color="primary"
+                        (click)="audioFileInput.click()">
+                        <mat-icon fontIcon="edit"></mat-icon>
+                    </button>
+                    <button mat-mini-fab
+                        *ngIf="(lsc$|async)?.audioUrl"
+                        color="warn"
+                        (click)="onDeleteAudio()">
+                        <mat-icon>delete</mat-icon>
+
+                    </button>
+                </div>
+                <div class="col-3">
+                    <audio *ngIf="(lsc$|async)?.audioUrl"
+                        [src]="(lsc$|async)?.audioUrl"
+                        controls></audio>
+                    <div *ngIf="!(lsc$|async)?.audioUrl">select audio</div>
+
+                </div>
+            </div>
+        </div>
+        <button mat-raised-button
+            color="primary"
+            (click)="onBackToItem()">back to item</button>
+    </main>
+    <!-- {{lsc|json}} -->
+</div>

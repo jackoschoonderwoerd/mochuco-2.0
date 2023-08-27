@@ -1,0 +1,25 @@
+.dialog-container {
+    padding: 1rem;
+    text-transform: uppercase;
+    h3 {
+        text-align: center;
+    }
+    .language-options {
+        li {
+            width: 100%;
+
+            .option {
+                text-transform: uppercase;
+                margin: 0.3rem 0;
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px solid gray;
+                cursor: pointer;
+                text-align: center;
+            }
+        }
+    }
+    .no-languages {
+        text-align: center;
+    }
+}

@@ -1,6 +1,6 @@
 <app-top></app-top>
-
 <router-outlet></router-outlet>
+<app-window-store *ngIf="isAdmin$|async"></app-window-store>
 <!-- <div class="admin-container">
     <div class="header">Welcome to Mochuco</div>
     <p>admin works!</p>

@@ -1,0 +1,82 @@
+<div class="admin-container">
+    <div class="header">
+        <button mat-raised-button
+            color="primary"
+            (click)="onClearState()">clear state</button>
+        <div>admin state</div>
+    </div>
+    <div class="sections">
+
+        <div class="section"
+            *ngIf="(lsc$|async)">
+            <h3>active lsc$</h3>
+            <button mat-raised-button
+                (click)="onClearLsc()">clear lsc</button>
+            <pre>
+                    {{lsc$|async|json}}
+                </pre>
+        </div>
+
+        <div class="section"
+            *ngIf="(lssc$|async) &&  (lssc$|async).length > 0">
+            <h3>available lssc$</h3>
+            <button mat-raised-button
+                (click)="onClearLssc()">clear lssc</button>
+            <pre>
+                    {{lssc$|async|json}}
+                </pre>
+        </div>
+
+        <div class="section"
+            *ngIf="(item$|async)">
+            <h3>active item$</h3>
+            <button mat-raised-button
+                (click)="onClearItem()">clear item</button>
+            <pre>
+                    {{item$|async|json}}
+                </pre>
+        </div>
+
+        <div class="section"
+            *ngIf="(items$|async) && (items$|async).length > 0">
+            <h3>available items$</h3>
+            <button mat-raised-button
+                (click)="onClearItems()">clear items</button>
+            <pre>
+                    {{items$|async|json}}
+                </pre>
+        </div>
+
+
+
+        <div class="section"
+            *ngIf="(venue$|async)">
+            <h3>active venue$</h3>
+            <button mat-raised-button
+                (click)="onClearVenue()">clear venue</button>
+            <pre>
+                    {{venue$|async|json}}
+                </pre>
+        </div>
+
+
+        <div class="section"
+            *ngIf="(venues$|async) && (venues$|async).length > 0">
+            <h3>available venues$</h3>
+            <button mat-raised-button
+                (click)="onClearVenues()">clear venues</button>
+            <pre>
+                {{venues$|async|json}}
+            </pre>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>

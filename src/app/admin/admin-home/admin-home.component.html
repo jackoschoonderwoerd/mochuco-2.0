@@ -34,4 +34,7 @@
 
     <p>Any other item is meant to give specific information about a particular detail of the venue and can only be reached by scanning it's unique qr-code. </p>
     <p>As soon as a user scans the qr-code assinged to a specific item. he will automatically be foreward to a page with the relevant information in the language of his choice.</p>
+    <button mat-raised-button
+        *ngIf="!(afAuth.currentUser)"
+        (click)="onLogIn()">Log In</button>
 </div>

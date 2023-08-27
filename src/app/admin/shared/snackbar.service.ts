@@ -13,7 +13,7 @@ export class SnackbarService {
         this.snackBar.open(message, null, {
             duration: 5000
         })
-        console.log(message)
+        // console.log(message)
     }
 
 }

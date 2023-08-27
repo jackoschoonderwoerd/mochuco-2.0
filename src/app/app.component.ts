@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './admin/auth/auth.service';
+import { User as FirebaseUser } from 'firebase/auth';
 import {
     Auth,
     createUserWithEmailAndPassword,
@@ -14,6 +15,13 @@ import {
     getAuth,
     onAuthStateChanged
 } from '@angular/fire/auth';
+import { Store } from '@ngrx/store';
+import * as fromAdmin from './admin/store/admin.reducer'
+import * as Admin from './admin/store/admin.actions'
+import { AdminState } from './admin/store/admin.reducer';
+import { RestoreState } from './admin/store/admin.actions';
+
+
 
 @Component({
     selector: 'app-root',
@@ -25,27 +33,35 @@ export class AppComponent implements OnInit {
     constructor(
         private afAuth: Auth,
         private authService: AuthService,
-        private router: Router) { }
+        private router: Router,
+        private store: Store<fromAdmin.State>) { }
 
     ngOnInit(): void {
-        this.afAuth.onAuthStateChanged((user) => {
+        // this.store.dispatch(fromAdmin)
+        if (localStorage.getItem('adminState')) {
+            const adminStateFromLS: AdminState = JSON.parse(localStorage.getItem('adminState'))
+            // console.log(adminStateFromLS);
+            // console.log(adminStateFromLS.createdAt);
+            // console.log(new Date().getTime() - adminStateFromLS.createdAt);
+            if (new Date().getTime() - adminStateFromLS.createdAt < 15 * 60 * 1000) {
+                fromAdmin.getStateFromLS(adminStateFromLS)
+            } else {
+                alert('ls expired')
+                this.authService.logOut()
+            }
+            // this.store.dispatch(new Admin.SetStateFromLs(adminState))
+        }
+        this.afAuth.onAuthStateChanged((user: FirebaseUser) => {
             if (user) {
-                this.authService.setUserAfterRefresh(user);
                 // console.log(user)
+                this.authService.setUserAfterRefresh(user);
                 if (user.uid == 'P91mUtOGYsMxBdjT2dqAAMzaBeG2') {
                     this.authService.setIsAdmin()
                 }
-                // this.router.navigate(['admin/venues'])
-                // this.router.navigate(['admin/item-lsc-description', { venueId: 'F4TmvZS3LTLLSGocx5tQ', itemId: 'VhUBJ3ydSt2wNcgutwgZ', language: 'german' }])
-                // this.router.navigate(['/admin/item-details', { venueId: 'F4TmvZS3LTLLSGocx5tQ', itemId: '50k1gGERTzBYO3N46o5X' }]);
-                // IS MAIN ITEM
-                // this.router.navigate(['/admin/main-page', { venueId: 'F4TmvZS3LTLLSGocx5tQ', itemId: '50k1gGERTzBYO3N46o5X' }]);
-                // this.router.navigate(['admin/coordinates', { itemName: 'VhUBJ3ydSt2wNcgutwgZ', venueName: 'F4TmvZS3LTLLSGocx5tQ' }])
-                // this.router.navigate(['/admin/item-details', { venueId: 'E2KYXZLyFHPKVCkSANGx', itemId: 'kWQOQ9DcwIfP7uIOpnQC' }])
-                // this.router.navigate(['admin/venue-details', { venueId: 'E2KYXZLyFHPKVCkSANGx' }])
+
             }
             else {
-                // this.router.navigate(['admin/log-in'])
+                console.log('no user')
             }
         })
     }

@@ -4,6 +4,8 @@
 
 <div class="item-container"
     #itemContainer>
+    <div class="top"
+        id="top"></div>
 
     <app-sidebar (closeSidebar)="onHideSidebar()"
         [ngClass]="hideSidebar ? 'hide-sidebar': 'show-sidebar'">
@@ -16,10 +18,10 @@
     <div class="cols">
 
 
-
+        <!-- {{itemService.lsc$|async|json}} -->
         <app-item-header (showAbout)="(showAbout())"></app-item-header>
         <div class="item">
-            <div class="no-item"
+            <!-- <div class="no-item"
                 *ngIf="!(itemService.venue$|async)">
                 <p>At this stage the data needed to display any information is insufficient.
                 </p>
@@ -30,7 +32,7 @@
                 <p>In case you are administering a venue, and wish to modify the data in this venue, in please log in</p>
                 <button mat-raised-button
                     (click)="onLogInPage()">log in page</button>
-            </div>
+            </div> -->
             <div *ngIf="itemService.collectingItemData$|async"
                 class="item-spinner-container">
                 <mat-spinner class="item-spinner"></mat-spinner>
@@ -72,6 +74,23 @@
                 <div class="description"
                     [innerHTML]="(itemService.lsc$|async)?.description">
                 </div>
+            </div>
+            <!-- {{itemService.orderedItemsIdName$|async|json}} -->
+            <div class="adjacent-items"
+                *ngIf="(itemService.orderedItemsIdName$|async)?.length > 0">
+                <div class="header">
+                    adjacent items
+                </div>
+                <ul class="adjacent-items-list">
+                    <li class="adjacent-item"
+                        *ngFor="let item of (itemService.orderedItemsIdName$|async)"
+                        (click)="onAdjacent(item.id)">
+                        <!-- <div class="">{{adjacentItem|json}}</div> -->
+                        <div class="adjacent-item-name">{{item.name}}</div>
+                        <div *ngIf="item.distance < 20000"
+                            class="adjacent-item-distance">{{item.distance}} m</div>
+                    </li>
+                </ul>
             </div>
 
         </div>

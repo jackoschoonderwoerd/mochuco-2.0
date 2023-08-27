@@ -5,22 +5,35 @@ import { VenuesComponent } from './venues/venues.component';
 import { ItemComponent } from '../user/item/item.component';
 
 import { QrCodeComponent } from './qr-code/qr-code.component';
-import { VenueDetailsComponent } from './venues/venue-details/venue-details.component';
-import { ItemDetailsComponent } from './venues/venue-details/item-details/item-details.component';
+import { VenueDetailsComponent } from './venues/venues-table/venue-details/venue-details.component';
+
 
 import { AuthGuardService } from './auth/auth-guard.service';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
-import { ItemLscDescriptionComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-description/item-lsc-description.component';
-import { ItemLscNameComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-name/item-lsc-name.component';
-import { NewItemComponent } from './venues/venue-details/new-item/new-item.component';
+// import { LscDescriptionComponent } from './venues/venue-details/item-details/item-lsc/lsc-details/item-lsc-description/item-lsc-description.component';
+// import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/item-lsc-name/item-lsc-name.component';
+import { NewItemComponent } from './venues/venues-table/venue-details/new-item/new-item.component';
 import { ErrPageComponent } from './shared/err-page/err-page.component';
-import { ItemLscDetailsComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-details.component';
-import { VenueNameComponent } from './venues/venue-details/venue-name/venue-name.component';
-import { CoordinatesComponent } from './venues/venue-details/item-details/coordinates/coordinates.component';
-import { MainItemComponent } from './venues/venue-details/item-details/main-item/main-item.component';
+// import { ItemLscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/lsc-details.component';
+import { VenueNameComponent } from './venues/venues-table/venue-details/venue-name/venue-name.component';
+import { CoordinatesComponent } from './venues/venues-table/venue-details/items-table/item-details/coordinates/coordinates.component';
+import { MainItemComponent } from './venues/venues-table/venue-details/items-table/item-details/main-item/main-item.component';
 import { StatsComponent } from './venues/stats/stats.component';
-import { ItemStatsComponent } from './venues/venue-details/item-details/item-stats/item-stats.component';
+import { ItemStatsComponent } from './venues/venues-table/venue-details/items-table/item-details/item-stats/item-stats.component';
 import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.component';
+import { ItemDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/item-details.component';
+import { LscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-details.component';
+import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-description/lsc-description.component';
+import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-name/lsc-name.component';
+import { WindowStoreComponent } from './store/window-store/window-store.component';
+// import { LscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/lsc-details.component';
+// import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/item-lsc-description/item-lsc-description.component';
+// import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/item-lsc-name/item-lsc-name.component';
+// import { ItemLscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-details.component';
+// import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/item-lsc-description/item-lsc-description.component';
+// import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/item-lsc-name/item-lsc-name.component';
+// import { LscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-details.component';
+// import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/item-lsc-description/item-lsc-description.component';
 
 
 const routes: Routes = [
@@ -81,20 +94,24 @@ const routes: Routes = [
             },
 
             {
-                path: 'item-lsc-details',
-                component: ItemLscDetailsComponent
+                path: 'lsc-details',
+                component: LscDetailsComponent
             },
             {
                 path: 'item-lsc-description',
-                component: ItemLscDescriptionComponent
+                component: LscDescriptionComponent
             },
             {
                 path: 'item-lsc-name',
-                component: ItemLscNameComponent
+                component: LscNameComponent
             },
             {
                 path: 'err-page',
                 component: ErrPageComponent
+            },
+            {
+                path: 'window-store',
+                component: WindowStoreComponent
             },
             {
                 path: '**', component: AdminHomeComponent

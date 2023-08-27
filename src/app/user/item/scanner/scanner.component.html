@@ -1,10 +1,9 @@
 <div class="scanner-container">
+
     <zxing-scanner #scanner
         (scanSuccess)="scanSuccessHandler($event)">
     </zxing-scanner>
-    <!-- <button (click)="enableScanner()"
-        type="button"
-        class="btn btn-success">Enable scanner</button> -->
+
 </div>
 <div class="url">{{url}}</div>
 <div class="button-container">
@@ -13,4 +12,10 @@
         (click)="exit()">
         <mat-icon>exit_to_app</mat-icon>
     </button>
+    <button mat-raised-button
+        (click)="onNearestItem()">nearest item</button>
+    <button mat-raised-button
+        (click)="onBrug226()">brug 226</button>
+    <button mat-raised-button
+        (click)="onMuntsluis()">muntsluis</button>
 </div>

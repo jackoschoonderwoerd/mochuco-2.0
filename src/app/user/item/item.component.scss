@@ -3,12 +3,16 @@
 //     display: grid;
 //     grid-template-columns: 1fr auto 1fr;
 //     .col-2 {
+
 .item-container {
+    // outline: 3px solid red;
+
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr;
-
+    height: calc(100vh - 3rem);
     max-width: 35rem;
+    background-color: $my-white;
 
     margin: auto;
     app-sidebar {
@@ -46,7 +50,8 @@
         top: 0;
         width: 100%;
         background-color: $header-background;
-        color: $my-white;
+        // color: $my-white;
+        // height: 4rem;
     }
 
     .item {
@@ -117,6 +122,29 @@
             justify-content: center;
             margin-top: 1rem;
         }
+        .adjacent-items {
+            padding: 1rem;
+            .adjacent-items-list {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                .adjacent-item {
+                    cursor: pointer;
+                    border: 3px solid lightgray;
+                    border-radius: 4px;
+                    padding: 0.3rem;
+
+                    display: flex;
+                    .adjacent-item-distance {
+                        // border: 1px solid black;
+                        // align-items: flex-end;
+                        // justify-content: end;
+                        margin-right: 0;
+                        margin-left: auto;
+                    }
+                }
+            }
+        }
     }
     app-item-footer {
         // padding: 0.5rem;
@@ -126,6 +154,7 @@
         bottom: 0;
         width: 100%;
         background-color: $footer-background;
+        height: 3rem;
     }
 }
 //     }

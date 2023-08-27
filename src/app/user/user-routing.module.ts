@@ -4,7 +4,8 @@ import { ItemComponent } from './item/item.component';
 import { ScannerComponent } from './item/scanner/scanner.component';
 import { AdminComponent } from '../admin/admin.component';
 import { AboutComponent } from './about/about.component';
-import { LogInComponent } from './log-in/log-in.component';
+import { LogInComponent } from '../admin/auth/log-in/log-in.component';
+import { UserErrorPageComponent } from './user-error-page/user-error-page.component';
 
 const routes: Routes = [
     {
@@ -18,6 +19,9 @@ const routes: Routes = [
     },
     {
         path: 'about', component: AboutComponent
+    },
+    {
+        path: 'user-error-page', component: UserErrorPageComponent
     },
     {
         path: 'log-in',

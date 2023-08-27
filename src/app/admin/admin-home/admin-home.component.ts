@@ -11,9 +11,13 @@ import { Router } from '@angular/router';
 export class AdminHomeComponent {
     constructor(
         private router: Router,
-        public authService: AuthService) { }
+        public authService: AuthService,
+        public afAuth: Auth) { }
 
-    onAddPreface() {
-        this.router.navigate(['/admin/item-lsc-description', { action: 'preface' }])
+    onLogIn() {
+        this.router.navigate(['user/log-in'])
     }
+    // onAddPreface() {
+    //     this.router.navigate(['/admin/item-lsc-description', { action: 'preface' }])
+    // }
 }

@@ -1,0 +1,27 @@
+<div class="dialog-container">
+    <h3>select language</h3>
+    <ul *ngIf="languageOptions.length > 0"
+        class="language-options">
+        <li>
+            <button mat-raised-button
+                class="option"
+                (click)="languageSelected(option)"
+                *ngFor="let option of languageOptions">
+                {{option}}
+            </button>
+        </li>
+
+        <li>
+            <button mat-raised-button
+                color="warn"
+                class="option cancel"
+                (click)="onCancel()">Cancel</button>
+        </li>
+    </ul>
+    <div *ngIf="languageOptions.length == 0"
+        class="no-languages">
+        <p>All available languages are in use.</p>
+        <button mat-raised-button
+            (click)="onCancel()">OK</button>
+    </div>
+</div>

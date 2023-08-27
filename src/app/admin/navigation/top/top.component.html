@@ -1,13 +1,11 @@
 <mat-toolbar color="primary">
     <ul class="menu">
-        <li>V1</li>
-        <li class="user-id"
-            *ngIf="afAuth.currentUser">
-            {{afAuth.currentUser.uid}}
-        </li>
         <li class="user-email"
             *ngIf="afAuth.currentUser">
-            {{afAuth.currentUser.email}}
+            {{afAuth.currentUser?.email}}
+        </li>
+        <li class="user-uid">
+            {{afAuth.currentUser?.uid}}
         </li>
         <li routerLinkActive="link-active"
             class="menu-item">
@@ -22,13 +20,18 @@
                 routerLink="">home</button>
         </li>
         <li class="menu-item"
-            *ngIf="!(authService.isLoggedIn$|async)"
+            *ngIf="!(afAuth.currentUser)"
             routerLinkActive="link-active">
             <button mat-raised-button
                 routerLink="log-in">Log in</button>
         </li>
         <li class="menu-item"
-            *ngIf="authService.isLoggedIn$|async"
+            routerLinkActive="link-active">
+            <button mat-raised-button
+                routerLink="window-store">store</button>
+        </li>
+        <li class="menu-item"
+            *ngIf="afAuth.currentUser"
             routerLinkActive="link-active">
             <button mat-raised-button
                 (click)="onLogOut()">Log out</button>

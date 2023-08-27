@@ -12,7 +12,6 @@
         <mat-spinner color="warn"
             [diameter]="25"></mat-spinner>
     </ng-template>
-    <!-- <div class="main-item-active">{{mainItemActive}}</div> -->
     <img *ngIf="!mainItemActive"
         (click)="onVenueLogo()"
         [src]="(itemService.venue$|async)?.logoUrl"

@@ -1,0 +1,104 @@
+<div class="filter-table"
+    *ngIf="(lsSC$|async) && (lsSC$|async).length > 0">
+    <!-- <div class="filter-table"> -->
+    <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput
+            (keyup)="applyFilter($event)"
+            placeholder="enter filter string"
+            #input>
+    </mat-form-field>
+    <table mat-table
+        [dataSource]="lscDataSource">
+
+
+        <ng-container matColumnDef="language">
+            <th mat-header-cell
+                class="language-th"
+                *matHeaderCellDef>LSContent</th>
+            <td mat-cell
+                class="language-td"
+                *matCellDef="let element"> {{element.language}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <th mat-header-cell
+                class="name-th"
+                *matHeaderCellDef>Name</th>
+            <td mat-cell
+                class="name-td"
+                *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+            <th mat-header-cell
+                class="description-th"
+                *matHeaderCellDef>Description</th>
+            <td mat-cell
+                class="description-td"
+                *matCellDef="let element">
+
+                {{element.description}}
+
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="audioUrl">
+            <th mat-header-cell
+                class="audio-th"
+                *matHeaderCellDef>Audio</th>
+            <td mat-cell
+                class="audio-td"
+                *matCellDef="let element">
+                <audio *ngIf="element.audioUrl"
+                    [src]="element.audioUrl"
+                    controls></audio>
+                <div class="no-audio"
+                    *ngIf="!element.audioUrl">no audio</div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell
+                class="edit-th"
+                *matHeaderCellDef>Edit</th>
+            <td mat-cell
+                class="edit-td"
+                *matCellDef="let element">
+                <button mat-mini-fab
+                    color="primary"
+                    (click)="onLscDetails(element.language)">
+                    <mat-icon>search</mat-icon>
+                </button>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell
+                class="delete-th"
+                *matHeaderCellDef>Delete</th>
+            <td mat-cell
+                class="delete-td"
+                *matCellDef="let element">
+                <button mat-mini-fab
+                    color="warn"
+                    (click)="onDeleteLsc(element.language, element.audioUrl)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+        </ng-container>
+
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedLscColumns"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedLscColumns;"></tr>
+
+        <tr class="mat-row"
+            *matNoDataRow>
+            <td class="mat-cell"
+                colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+</div>
+<!-- <div class="no-languages"
+    *ngIf="!(lsSC$|async) || (lsSC$|async) == 0">
+    no languages specific content yet
+</div> -->

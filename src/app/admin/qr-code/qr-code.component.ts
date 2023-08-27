@@ -2,11 +2,14 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import html2canvas from 'html2canvas';
-import { VenuesService, Venue } from '../venues/venues.service';
-import { Item } from '../../shared/item.model';
+import { VenuesService } from '../services/venues.service';
+import { Item, Venue } from '../../shared/item.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrPageComponent } from '../shared/err-page/err-page.component';
-import { ItemDetailsDbService } from '../venues/venue-details/item-details/item-details-db.service';
+import { ItemDetailsDbService } from '../services/item-details-db.service';
+import { Store } from '@ngrx/store';
+import * as fromAdmin from '../store/admin.reducer'
+import * as Admin from './../store/admin.actions'
 
 @Component({
     selector: 'app-qr-code',
@@ -42,7 +45,8 @@ export class QrCodeComponent implements OnInit {
         private venuesService: VenuesService,
         private dialog: MatDialog,
         private itemDetailsDbService: ItemDetailsDbService,
-        private router: Router
+        private router: Router,
+        private store: Store<fromAdmin.AdminState>
     ) { }
 
 
@@ -53,25 +57,31 @@ export class QrCodeComponent implements OnInit {
         this.inititemNameFontSizeForm()
 
         this.route.params.subscribe((params: any) => {
-            console.log(params)
+            // console.log(params)
             this.venueId = params.venueId
             if (params.venueId) {
                 this.venueId = params.venueId
-                this.venuesService.readVenue(this.venueId).subscribe((venue: Venue) => {
-                    this.venue = venue;
-                    console.log(this.venue);
+                this.venuesService.readVenue(this.venueId)
+                this.store.select(fromAdmin.getVenue).subscribe((venue: Venue) => {
+                    this.venue = venue
                 })
+                // this.venuesService.readVenue(this.venueId).subscribe((venue: Venue) => {
+                //     this.venue = venue;
+                //     console.log(this.venue);
+                // })
             }
             if (params.itemId) {
-                console.log(params.itemId);
+                // console.log(params.itemId);
                 const itemId = params.itemId
-                this.itemDetailsDbService.readItem(this.venueId, itemId).subscribe((item: Item) => {
-                    this.item = item;
-                    console.log(this.item)
-                })
+                // this.itemDetailsDbService.readItem(this.venueId, itemId)
+                this.store.select(fromAdmin.getItem)
+                    .subscribe((item: Item) => {
+                        this.item = item;
+                        // console.log(this.item)
+                    })
             }
             this.itemId = params.itemId
-            console.log(this.itemId);
+            // console.log(this.itemId);
             if (params.local) {
                 this.qrLocal = true
             }
@@ -132,9 +142,9 @@ export class QrCodeComponent implements OnInit {
 
     onCreateDownloadLinkWithTitle() {
         if (!this.onlyVenueMode) {
-            console.log(this.printArea);
+            // console.log(this.printArea);
             html2canvas(this.printArea.nativeElement).then(canvas => {
-                console.log(canvas)
+                // console.log(canvas)
                 var image: any = canvas.toDataURL();
                 var aDownloadLink = document.createElement('a');
                 aDownloadLink.download = this.item.name;
@@ -142,9 +152,9 @@ export class QrCodeComponent implements OnInit {
                 aDownloadLink.click();
             })
         } else {
-            console.log(this.printArea);
+            // console.log(this.printArea);
             html2canvas(this.printArea.nativeElement).then(canvas => {
-                console.log(canvas)
+                // console.log(canvas)
                 var image: any = canvas.toDataURL();
                 var aDownloadLink = document.createElement('a');
                 aDownloadLink.download = this.venue.venueName;

@@ -2,7 +2,9 @@
     padding: 3rem 1rem 3rem 1rem;
 }
 .button-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
     justify-content: flex-end;
     padding: 1rem;
 }

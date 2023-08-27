@@ -1,42 +1,59 @@
-import { NgModule } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { SharedModule } from '../shared/shared.module.tsXXX';
 
 
+import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.component';
 import { AdminComponent } from './admin.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminMaterialModule } from './admin-material.module';
+import { adminReducer } from './store/admin.reducer';
 import { AdminRoutingModule } from './admin-routing.module';
 import { CommonModule } from '@angular/common';
 import { ConfirmComponent } from './shared/confirm/confirm.component';
+import { CoordinatesComponent } from './venues/venues-table/venue-details/items-table/item-details/coordinates/coordinates.component';
+import { ErrPageComponent } from './shared/err-page/err-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ItemDetailsComponent } from './venues/venue-details/item-details/item-details.component';
 
+// import { ItemLscAudioComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/item-lsc-audio/item-lsc-audio.component';
+// import { ItemLscComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/item-lsc.component.tsxxx';
+// import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/item-lsc-description/item-lsc-description.component';
+// import { ItemLscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/lsc-details.component';
+// import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/item-lsc-name/item-lsc-name.component';
+import { ItemStatsComponent } from './venues/venues-table/venue-details/items-table/item-details/item-stats/item-stats.component';
+import { ItemsTableComponent } from './venues/venues-table/venue-details/items-table/items-table.component';
+import { LanguageOptionsDialogComponent } from './venues/venues-table/venue-details/items-table/item-details/language-options-dialog/language-options-dialog.component'
+import { LscTableComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-table.component';
+import { MainItemComponent } from './venues/venues-table/venue-details/items-table/item-details/main-item/main-item.component';
+import { NewItemComponent } from './venues/venues-table/venue-details/new-item/new-item.component';
+import { NgModule } from '@angular/core';
+// import { PreviewComponent } from './venues/venues-table/venue-details/items-table/item-details/item-lsc/lsc-details/preview/preview.component';
 import { QrCodeComponent } from './qr-code/qr-code.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { RouterModule } from '@angular/router';
-import { TopComponent } from './navigation/top/top.component';
-import { VenueDetailsComponent } from './venues/venue-details/venue-details.component';
-import { VenuesComponent } from './venues/venues.component';
-import { WarningComponent } from './shared/warning/warning.component';
-import { ItemLscAudioComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-audio/item-lsc-audio.component';
-import { ItemLscDescriptionComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-description/item-lsc-description.component';
-import { ItemLscNameComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-name/item-lsc-name.component';
-import { NewItemComponent } from './venues/venue-details/new-item/new-item.component';
-import { ErrPageComponent } from './shared/err-page/err-page.component';
-import { ItemLscComponent } from './venues/venue-details/item-details/item-lsc/item-lsc.component';
-import { ItemLscDetailsComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/item-lsc-details.component';
-import { LscTableComponent } from './venues/venue-details/item-details/lsc-table/lsc-table.component';
-import { ItemTableComponent } from './venues/venue-details/item-table/item-table.component';
-import { VenuesTableComponent } from './venues/venues-table/venues-table.component';
-import { VenueNameComponent } from './venues/venue-details/venue-name/venue-name.component';
-
-import { PreviewComponent } from './venues/venue-details/item-details/item-lsc/item-lsc-details/preview/preview.component';
-import { CoordinatesComponent } from './venues/venue-details/item-details/coordinates/coordinates.component';
-import { MainItemComponent } from './venues/venue-details/item-details/main-item/main-item.component';
 import { StatsComponent } from './venues/stats/stats.component';
-import { ItemStatsComponent } from './venues/venue-details/item-details/item-stats/item-stats.component';
-import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.component';
+import { StoreModule } from '@ngrx/store';
+import { TopComponent } from './navigation/top/top.component';
+import { VenueDetailsComponent } from './venues/venues-table/venue-details/venue-details.component';
+import { VenueNameComponent } from './venues/venues-table/venue-details/venue-name/venue-name.component';
+import { VenuesComponent } from './venues/venues.component';
+import { VenuesTableComponent } from './venues/venues-table/venues-table.component';
+import { WarningComponent } from './shared/warning/warning.component';
+import { ItemDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/item-details.component';
+import { ItemLscAudioComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-audio/lsc-audio.component';
+import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-description/lsc-description.component';
+import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-name/lsc-name.component';
+import { LscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-details.component';
+import { PreviewComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/preview/preview.component';
+import { WindowStoreComponent } from './store/window-store/window-store.component';
+// import { ItemLscAudioComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/item-lsc-audio/item-lsc-audio.component';
+// import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/item-lsc-description/item-lsc-description.component';
+// import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/item-lsc-name/item-lsc-name.component';
+// import { LscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/lsc-details.component';
+// import { PreviewComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/item-lsc-details/preview/preview.component';
+// import { ItemLscAudioComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/item-lsc-audio/item-lsc-audio.component';
+// import { LscDescriptionComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/item-lsc-description/item-lsc-description.component';
+// import { LscNameComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/item-lsc-name/item-lsc-name.component';
+// import { ItemLscDetailsComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/lsc-details.component';
+// import { PreviewComponent } from './venues/venues-table/venue-details/items-table/item-details/lsc-table/lsc-details/preview/preview.component';
+
 
 
 @NgModule({
@@ -52,14 +69,14 @@ import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.compon
         VenueDetailsComponent,
         VenuesComponent,
         ItemLscAudioComponent,
-        ItemLscDescriptionComponent,
-        ItemLscNameComponent,
+        LscDescriptionComponent,
+        LscNameComponent,
         NewItemComponent,
         ErrPageComponent,
-        ItemLscComponent,
-        ItemLscDetailsComponent,
+        // ItemLscComponent,
+        LscDetailsComponent,
         LscTableComponent,
-        ItemTableComponent,
+        ItemsTableComponent,
         VenuesTableComponent,
         VenueNameComponent,
         PreviewComponent,
@@ -67,7 +84,9 @@ import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.compon
         MainItemComponent,
         StatsComponent,
         ItemStatsComponent,
-        AddPrefaceComponent
+        AddPrefaceComponent,
+        LanguageOptionsDialogComponent,
+        WindowStoreComponent
 
     ],
     imports: [
@@ -79,7 +98,8 @@ import { AddPrefaceComponent } from './admin-home/add-preface/add-preface.compon
         FormsModule,
         QRCodeModule,
         ReactiveFormsModule,
-        RouterModule
+        RouterModule,
+        StoreModule.forFeature('admin', adminReducer)
     ],
 
 })

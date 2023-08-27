@@ -1,0 +1,37 @@
+<div class="admin-container">
+    <p>editmode: {{editmode}}</p>
+    <div class="location header">
+        <div class="venue">
+
+            <div class="title">venue:</div>
+            <div class="">{{(venue$|async)?.venueName}}</div>
+        </div>
+        <div class="item">
+            <div class="title">item:</div>
+            <div class="">{{(item$|async)?.name}}</div>
+        </div>
+        <div class="language">
+            <div class="title">language:</div>
+            <div class="">{{language}}</div>
+        </div>
+        <div class="action">
+            <div class="title">edit:</div>
+            <div class="">language specific name</div>
+        </div>
+    </div>
+    <!-- <div class="editmode">EDITMODE: {{editmode}}</div> -->
+    <form [formGroup]="nameForm">
+        <mat-form-field>
+            <mat-label>language specific name</mat-label>
+            <input type="text"
+                matInput
+                formControlName="name">
+        </mat-form-field>
+        <button mat-raised-button
+            (click)="onAddLscName()"
+            [disabled]="nameForm.invalid">{{editmode?'save edits':'add name'}}</button>
+        <button class="cancel"
+            mat-raised-button
+            (click)="onCancel()">cancel</button>
+    </form>
+</div>

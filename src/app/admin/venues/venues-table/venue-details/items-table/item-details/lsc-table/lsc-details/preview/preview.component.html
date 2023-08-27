@@ -1,0 +1,18 @@
+<div class="preview">
+    <div class="header">
+        {{(lsc$|async)?.name}}
+    </div>
+    <div class="image-container">
+        <img [src]="(item$|async)?.imageUrl"
+            alt="">
+    </div>
+
+    <div class="description"
+        [innerHTML]="(lsc$|async)?.description"></div>
+    <div class="audio-container">
+        <audio [src]="(lsc$|async)?.audioUrl"
+            controls></audio>
+    </div>
+</div>
+<!-- {{lsc|json}}
+{{item|json}} -->
